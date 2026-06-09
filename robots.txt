@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://reio0807.github.io/sitemap.xml
