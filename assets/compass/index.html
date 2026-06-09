@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Compass — AI Safety × AI Economics</title>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=JetBrains+Mono:wght@400;700&display=swap');
+  :root{
+    --bg:#0c0e14; --card:#161922; --card2:#1d2130; --line:#282d3e;
+    --text:#dfe3ed; --muted:#8b93a7;
+    --accent:#7b9aff; --accent2:#3dd9a0; --warn:#dba050; --bad:#d9636e;
+    --good:#3dd9a0; --purple:#b48eff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:'DM Sans',-apple-system,Segoe UI,Roboto,sans-serif;
+    line-height:1.7;font-size:15px;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px 120px;}
+  .cover{padding:60px 0 40px;text-align:center;border-bottom:1px solid var(--line);}
+  .cover h1{font-size:38px;line-height:1.2;font-weight:800;letter-spacing:.3px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2),var(--purple));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .cover .sub{color:var(--muted);margin-top:14px;font-size:15px;}
+  .cover .rev{display:inline-block;margin-top:18px;padding:4px 14px;border:1px solid var(--accent);
+    border-radius:20px;color:var(--accent);font-size:12px;font-weight:600;letter-spacing:.5px;
+    font-family:'JetBrains Mono',monospace;}
+  section{padding:40px 0 10px;border-bottom:1px solid var(--line);}
+  h2{font-size:22px;font-weight:800;margin:6px 0 6px;}
+  .lead{color:var(--muted);font-size:14px;margin-bottom:18px;}
+
+  .controls{padding:24px 0;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;}
+  .lens-toggle{display:flex;gap:6px;flex-wrap:wrap;}
+  .lens-btn{background:var(--card);border:1px solid var(--line);color:var(--muted);
+    padding:8px 14px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;
+    cursor:pointer;transition:all .15s;}
+  .lens-btn:hover{border-color:var(--accent);color:var(--text);}
+  .lens-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#0c0e14;border-color:transparent;}
+
+  .stats{display:flex;gap:18px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:12px;}
+  .stat{color:var(--muted);}
+  .stat b{color:var(--text);font-weight:700;}
+
+  #treemap{height:560px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  #underexplored{height:520px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+
+  .opp-callout{background:linear-gradient(135deg,#211a30,#161922);border:1px solid #3a2e55;
+    border-radius:12px;padding:18px 22px;margin:16px 0;}
+  .opp-callout h3{font-size:14px;font-weight:800;color:var(--purple);letter-spacing:1.5px;
+    text-transform:uppercase;font-family:'JetBrains Mono',monospace;margin-bottom:10px;}
+  .opp-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:8px;}
+  .opp-item{background:rgba(180,142,255,0.08);border:1px solid rgba(180,142,255,0.25);
+    border-radius:10px;padding:12px 14px;}
+  .opp-item .on{font-weight:700;font-size:14px;color:var(--text);}
+  .opp-item .om{font-size:11.5px;color:var(--muted);margin-top:4px;font-family:'JetBrains Mono',monospace;}
+  .opp-item .ow{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5;}
+
+  .canon-grid, .hot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;}
+  .mini-card{background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:12px 14px;transition:all .15s;}
+  .mini-card:hover{border-color:var(--accent);}
+  .mini-card .mt{font-weight:700;font-size:13.5px;line-height:1.4;color:var(--text);}
+  .mini-card .mm{color:var(--muted);font-size:11.5px;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+  .mini-card a{color:var(--accent);text-decoration:none;}
+  .mini-card a:hover{text-decoration:underline;}
+
+  .filter-controls{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+  #search{background:var(--card);border:1px solid var(--line);color:var(--text);
+    padding:10px 14px;border-radius:10px;font-family:inherit;font-size:14px;width:100%;}
+  #search:focus{outline:none;border-color:var(--accent);}
+  .filter-chips{display:flex;flex-wrap:wrap;gap:6px;}
+  .chip{background:var(--card2);border:1px solid var(--line);color:var(--muted);
+    padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;transition:all .15s;}
+  .chip:hover{border-color:var(--accent);color:var(--text);}
+  .chip.active{background:var(--accent);color:#0c0e14;border-color:var(--accent);font-weight:700;}
+  .chip-label{font-size:11px;color:var(--muted);margin-right:8px;align-self:center;
+    font-family:'JetBrains Mono',monospace;letter-spacing:.5px;text-transform:uppercase;}
+
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-top:18px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+    transition:all .15s;display:flex;flex-direction:column;gap:8px;}
+  .card.dim{opacity:.35;}
+  .card:hover{border-color:var(--accent);transform:translateY(-1px);}
+  .card.must-know{border-left:3px solid var(--warn);}
+  .card.hot{border-left:3px solid var(--bad);}
+  .card .ct{font-weight:700;font-size:14px;line-height:1.35;}
+  .card .ct a{color:var(--text);text-decoration:none;}
+  .card .ct a:hover{color:var(--accent);}
+  .card .ca{color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;}
+  .card .cw{color:var(--muted);font-size:12.5px;line-height:1.5;}
+  .card .cmeta{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px;border-top:1px solid var(--line);}
+  .pill{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10.5px;font-weight:700;
+    font-family:'JetBrains Mono',monospace;letter-spacing:.3px;}
+  .pill-type{background:var(--card2);color:var(--muted);border:1px solid var(--line);}
+  .pill-subj{background:#1a1d30;color:var(--accent);border:1px solid #2e3355;}
+  .pill-must{background:#2a2118;color:var(--warn);border:1px solid #4a3a28;}
+  .pill-hot{background:#2a1a1c;color:var(--bad);border:1px solid #4a2a2e;}
+  .pill-year{background:transparent;color:var(--muted);border:1px solid var(--line);}
+
+  .panel-info{background:linear-gradient(135deg,#141a2e,#161922);border-left:3px solid var(--accent);
+    padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;color:var(--muted);font-size:13px;}
+  .panel-info b{color:var(--accent);}
+
+  .foot{text-align:center;color:var(--muted);font-size:12.5px;padding:40px 0 0;}
+
+  @media(max-width:740px){
+    #treemap{height:520px;}
+    #underexplored{height:480px;}
+    .controls{flex-direction:column;align-items:flex-start;}
+  }
+  /* Sunburst mind-map */
+  #treemap{height:660px;}
+  .cluster-svg text.cat-label{font-family:'DM Sans';font-size:13.5px;font-weight:800;
+    fill:#dfe3ed;letter-spacing:.4px;text-transform:uppercase;}
+  .cluster-svg text.subj-label{font-family:'DM Sans';font-weight:600;fill:rgba(223,227,237,0.82);
+    pointer-events:none;}
+  .cluster-svg .legend text{font-family:'DM Sans';font-size:11px;fill:#8b93a7;}
+  .cluster-svg circle.item-leaf{transition:transform .15s;}
+  .cluster-svg circle.item-leaf:hover{stroke:#ffffff;stroke-width:2px;}
+  /* Tooltip */
+  .compass-tooltip{
+    position:absolute;background:#161922;border:1px solid #7b9aff;
+    border-radius:10px;padding:12px 14px;max-width:340px;pointer-events:none;
+    opacity:0;transition:opacity .15s;z-index:1000;
+    font-family:'DM Sans',sans-serif;font-size:13px;color:#dfe3ed;
+    box-shadow:0 8px 24px rgba(0,0,0,0.55);
+  }
+  .compass-tooltip .tt-title{font-weight:700;line-height:1.3;margin-bottom:6px;color:#dfe3ed;}
+  .compass-tooltip .tt-meta{color:#8b93a7;font-size:11.5px;font-family:'JetBrains Mono',monospace;}
+  .compass-tooltip .tt-subj{color:#7b9aff;font-size:11.5px;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+  .compass-tooltip .tt-why{color:#a8b0c3;font-size:12.5px;margin-top:8px;line-height:1.5;}
+  .compass-tooltip .tt-rel{color:#3dd9a0;font-size:11px;margin-top:6px;font-family:'JetBrains Mono',monospace;}
+  .compass-tooltip .tt-badge{display:inline-block;padding:1px 7px;border-radius:4px;font-size:10px;
+    font-weight:700;margin-right:5px;font-family:'JetBrains Mono',monospace;}
+  .badge-must{background:#2a2118;color:#dba050;border:1px solid #4a3a28;}
+  .badge-hot{background:#2a1a1c;color:#d9636e;border:1px solid #4a2a2e;}
+
+  .pill-rel{background:#1a2240;color:#7b9aff;border:1px solid #2e3355;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <h1>Field Compass</h1>
+  <p class="sub">AI Safety × AI Economics — a personal map of the field</p>
+  <p class="rev" id="rev-banner">Static · hand-curated · no backend</p>
+</header>
+
+<section class="controls">
+  <div class="stats" id="stats"></div>
+</section>
+
+<section>
+  <h2>The Field — Where Things Live</h2>
+  <p class="lead">A level-by-level mind map. <b>Click any slice to zoom in</b>, <b>click the center to zoom out</b>, and <b>click an item</b> (innermost ring) to open its link. Slice size scales with relevance.</p>
+  <p class="lead" style="margin-top:-2px"><b>Outer rings (categories + subjects)</b> use a muted family tint for orientation: <span style="color:#7b9aff">AI Safety</span> · <span style="color:#3dd9a0">AI + Economics</span> · <span style="color:#dba050">Methods &amp; Tools</span> · <span style="color:#b48eff">Programs &amp; Funding</span> · <span style="color:#d9636e">Media</span>.<br>
+  <b>Inner ring (individual items)</b> encodes importance:
+  <span style="color:#d9636e;font-weight:700">red = hot</span> ·
+  <span style="color:#dba050;font-weight:700">gold = must-know</span> ·
+  <span style="color:#7b9aff;font-weight:700">blue = high relevance</span> ·
+  <span style="color:#5fc28a">green = medium</span> ·
+  <span style="color:#7d869e">gray = lower</span>.</p>
+  <div id="treemap"></div>
+</section>
+
+<section>
+  <h2>Underexplored Zones — Where New Work Could Land</h2>
+  <p class="lead">Each bubble is a subject. <b>X-axis</b>: average relevance (right = more relevant). <b>Y-axis</b>: scarcity (top = fewer existing items). <b>Color &amp; size</b>: recency — more 2025+ activity shifts toward blue and larger. A <b>highlighted ring</b> + larger bubble marks the ★ OPPORTUNITY ZONE (high relevance × high scarcity) — candidate directions for new research.</p>
+  <div id="underexplored"></div>
+  <div class="opp-callout" id="opp-callout">
+    <h3 id="opp-title">★ Top Opportunity Zones</h3>
+    <div class="opp-list" id="opp-list"></div>
+  </div>
+</section>
+
+<section>
+  <h2>Must-Knows — Read These First</h2>
+  <p class="lead">Canonical foundations. If you can't discuss these in some detail, you're not yet fluent in the field.</p>
+  <div class="canon-grid" id="must-knows-list"></div>
+</section>
+
+<section>
+  <h2>Hot This Quarter</h2>
+  <p class="lead">Recent items (2025–2026) drawing significant attention in the AI-safety / AI-econ communities.</p>
+  <div class="hot-grid" id="hot-list"></div>
+</section>
+
+<section>
+  <h2>All Items — Filter &amp; Search</h2>
+  <p class="lead">The full curated set. Filter by subject, type, or year, or search titles, authors, and the "why it matters" notes.</p>
+  <div class="filter-controls">
+    <input id="search" placeholder="Search title, author, why-it-matters..." />
+    <div class="filter-chips" id="subject-chips"><span class="chip-label">Subject</span></div>
+    <div class="filter-chips" id="type-chips"><span class="chip-label">Type</span></div>
+    <div class="filter-chips" id="year-chips"><span class="chip-label">Year</span></div>
+  </div>
+  <div class="card-grid" id="card-grid"></div>
+</section>
+
+<div class="foot">
+  Field Compass · a personal, hand-curated map of AI safety × AI economics · static, no backend.
+</div>
+
+</div>
+
+<script>
+const TAXONOMY = {
+  "AI Safety": [
+    "Safety Foundations",
+    "AI Evaluations",
+    "Alignment & Oversight",
+    "Multi-Agent Safety",
+    "AI Governance"
+  ],
+  "AI + Economics": [
+    "LLM Agent Experiments",
+    "LLM Behavior & Calibration",
+    "Mechanism Design + AI",
+    "Causal Inference + LLM",
+    "AI Macro & Labor",
+    "AI Forecasting"
+  ],
+  "Methods & Tools": [
+    "Agentic Harnesses",
+    "Behavioral / Scenario Modeling",
+    "Eval Frameworks"
+  ],
+  "Programs & Funding": [
+    "Fellowships & Courses",
+    "Funding RFPs",
+    "Anthropic Economic Index"
+  ],
+  "Media": [
+    "Podcasts",
+    "Newsletters",
+    "Lab Blogs",
+    "Books"
+  ]
+};
+const ITEMS = [
+  {
+    "title": "International AI Safety Report 2026",
+    "authors": "Bengio et al. (91 co-authors)",
+    "year": 2026,
+    "type": "paper",
+    "subject": "Safety Foundations",
+    "rel": 4,
+    "must_know": true,
+    "hot": true,
+    "link": "https://arxiv.org/abs/2602.21012",
+    "why": "Authoritative global baseline on capabilities, risks, and safety — essential context for any AI-safety conversation."
+  },
+  {
+    "title": "AI Safety Index Winter 2025",
+    "authors": "Future of Life Institute",
+    "year": 2025,
+    "type": "paper",
+    "subject": "AI Governance",
+    "rel": 2,
+    "must_know": true,
+    "hot": false,
+    "link": "https://futureoflife.org/ai-safety-index-winter-2025/",
+    "why": "An independent assessment of frontier labs' safety practices."
+  },
+  {
+    "title": "Human Compatible (Stuart Russell)",
+    "authors": "Stuart Russell",
+    "year": 2019,
+    "type": "book",
+    "subject": "Safety Foundations",
+    "rel": 3,
+    "must_know": true,
+    "hot": false,
+    "link": "https://people.eecs.berkeley.edu/~russell/hc.html",
+    "why": "Foundational framing of the alignment problem; required reading for fluency in the field."
+  },
+  {
+    "title": "Superintelligence (Nick Bostrom)",
+    "authors": "Nick Bostrom",
+    "year": 2014,
+    "type": "book",
+    "subject": "Safety Foundations",
+    "rel": 2,
+    "must_know": false,
+    "hot": false,
+    "link": "https://en.wikipedia.org/wiki/Superintelligence:_Paths,_Dangers,_Strategies",
+    "why": "Foundational existential-risk framing. Dated, but referenced everywhere."
+  },
+  {
+    "title": "Preventing an AI-related catastrophe",
+    "authors": "80,000 Hours",
+    "year": 2024,
+    "type": "blog",
+    "subject": "Safety Foundations",
+    "rel": 3,
+    "must_know": true,
+    "hot": false,
+    "link": "https://80000hours.org/problem-profiles/artificial-intelligence/",
+    "why": "The best single industry-landscape orientation to the field."
+  },
+  {
+    "title": "Concrete Problems in AI Safety",
+    "authors": "Amodei et al.",
+    "year": 2016,
+    "type": "paper",
+    "subject": "Safety Foundations",
+    "rel": 3,
+    "must_know": true,
+    "hot": false,
+    "link": "https://arxiv.org/abs/1606.06565",
+    "why": "Foundational early framing of empirical AI-safety problems."
+  },
+  {
+    "title": "aisafety.com (community hub)",
+    "authors": "Community",
+    "year": 2026,
+    "type": "blog",
+    "subject": "Safety Foundations",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://aisafety.com/",
+    "why": "A comprehensive curated meta-index; a good launch page for the field."
+  },
+  {
+    "title": "Evaluating Frontier Models for Dangerous Capabilities",
+    "authors": "Phuong et al. (DeepMind)",
+    "year": 2024,
+    "type": "paper",
+    "subject": "AI Evaluations",
+    "rel": 5,
+    "must_know": true,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2403.13793",
+    "why": "A reference point for capability evaluations of frontier models."
+  },
+  {
+    "title": "Inspect AI (UK AISI evaluation framework)",
+    "authors": "UK AI Safety Institute",
+    "year": 2024,
+    "type": "course",
+    "subject": "AI Evaluations",
+    "rel": 5,
+    "must_know": true,
+    "hot": false,
+    "link": "https://github.com/UKGovernmentBEIS/inspect_ai",
+    "why": "The reference evaluation framework from the UK AI Safety Institute."
+  },
+  {
+    "title": "METR Task Standard",
+    "authors": "METR",
+    "year": 2024,
+    "type": "course",
+    "subject": "Eval Frameworks",
+    "rel": 5,
+    "must_know": true,
+    "hot": false,
+    "link": "https://github.com/METR/task-standard",
+    "why": "A schema for evaluating autonomous agents."
+  },
+  {
+    "title": "Inspect Evals — 200+ pre-built evaluations",
+    "authors": "UK AISI",
+    "year": 2024,
+    "type": "course",
+    "subject": "Eval Frameworks",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://github.com/UKGovernmentBEIS/inspect_evals",
+    "why": "A large library of ready-made evaluation tasks; good models of scorer abstraction."
+  },
+  {
+    "title": "Inspect AI Tutorial",
+    "authors": "UK AISI",
+    "year": 2025,
+    "type": "course",
+    "subject": "Eval Frameworks",
+    "rel": 5,
+    "must_know": false,
+    "hot": false,
+    "link": "https://inspect.ai-safety-institute.org.uk/",
+    "why": "A hands-on tutorial for building with Inspect AI."
+  },
+  {
+    "title": "Model-Written Evaluations (Anthropic)",
+    "authors": "Anthropic",
+    "year": 2022,
+    "type": "paper",
+    "subject": "AI Evaluations",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2212.09251",
+    "why": "A foundational eval-methodology paper on self-evaluation primitives."
+  },
+  {
+    "title": "Inverse Scaling Prize Papers",
+    "authors": "Various",
+    "year": 2024,
+    "type": "paper",
+    "subject": "AI Evaluations",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://github.com/inverse-scaling/prize",
+    "why": "Tasks where larger models perform worse — important counter-evidence to naive scaling."
+  },
+  {
+    "title": "Scaling Laws For Scalable Oversight",
+    "authors": "Engels, Baek, Kantamneni, Tegmark (MIT)",
+    "year": 2025,
+    "type": "paper",
+    "subject": "Alignment & Oversight",
+    "rel": 4,
+    "must_know": true,
+    "hot": true,
+    "link": "https://arxiv.org/abs/2504.18530",
+    "why": "A theoretical framework for oversight under capability asymmetry, in scaling-law form."
+  },
+  {
+    "title": "Weak-to-Strong Generalization",
+    "authors": "Burns et al. (OpenAI)",
+    "year": 2023,
+    "type": "paper",
+    "subject": "Alignment & Oversight",
+    "rel": 3,
+    "must_know": true,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2312.09390",
+    "why": "A foundational result on scalable oversight."
+  },
+  {
+    "title": "Debate Helps Weak-to-Strong Generalization",
+    "authors": "Kenton et al.",
+    "year": 2025,
+    "type": "paper",
+    "subject": "Alignment & Oversight",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2501.13124",
+    "why": "Empirical debate-protocol results with a clean experimental design."
+  },
+  {
+    "title": "Constitutional AI (Anthropic)",
+    "authors": "Bai et al. (Anthropic)",
+    "year": 2022,
+    "type": "paper",
+    "subject": "Alignment & Oversight",
+    "rel": 4,
+    "must_know": true,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2212.08073",
+    "why": "Anthropic's main alignment approach."
+  },
+  {
+    "title": "Sleeper Agents (Anthropic)",
+    "authors": "Hubinger et al.",
+    "year": 2024,
+    "type": "paper",
+    "subject": "Alignment & Oversight",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2401.05566",
+    "why": "A foundational empirical paper on deceptive alignment."
+  },
+  {
+    "title": "The Artificial Self: Characterising the Landscape of AI Identity",
+    "authors": "Douglas, Kulveit, Havlíček, Pearson-Vogel, Cotton-Barratt, Duvenaud",
+    "year": 2025,
+    "type": "paper",
+    "subject": "Alignment & Oversight",
+    "rel": 5,
+    "must_know": false,
+    "hot": true,
+    "link": "https://theartificialself.ai/",
+    "why": "Five experiments showing that an AI's notion of 'self' (instance vs. weights vs. persona) shifts its behavior as much as goal changes do — directly relevant to how framework identity shapes multi-agent systems."
+  },
+  {
+    "title": "GPT-4 Sycophancy Paper",
+    "authors": "Sharma et al.",
+    "year": 2023,
+    "type": "paper",
+    "subject": "Alignment & Oversight",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2310.13548",
+    "why": "Foundational documentation of sycophancy — an important behavioral failure mode."
+  },
+  {
+    "title": "AI Alignment: A Comprehensive Survey",
+    "authors": "Ji et al.",
+    "year": 2024,
+    "type": "paper",
+    "subject": "Alignment & Oversight",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2310.19852",
+    "why": "The most comprehensive alignment survey; useful as a reference."
+  },
+  {
+    "title": "Reward Hacking Examples (Krakovna)",
+    "authors": "Krakovna et al.",
+    "year": 2020,
+    "type": "blog",
+    "subject": "Alignment & Oversight",
+    "rel": 2,
+    "must_know": false,
+    "hot": false,
+    "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRPiprOaC3HsCf5Tuum8bRfzYUiKLRqJmbOoC-32JorNdfyTiRRsR7Ea5eWtvsWzuxo8bjOxCG84dAg/pubhtml",
+    "why": "Empirical examples of misalignment; useful for grounding abstract concepts."
+  },
+  {
+    "title": "Multi-Agent Risks from Advanced AI",
+    "authors": "Hammond et al. (Cooperative AI Foundation)",
+    "year": 2025,
+    "type": "paper",
+    "subject": "Multi-Agent Safety",
+    "rel": 5,
+    "must_know": true,
+    "hot": true,
+    "link": "https://arxiv.org/abs/2502.14143",
+    "why": "A taxonomy of multi-agent risks; the clearest bridge between strategic-interaction economics and safety language."
+  },
+  {
+    "title": "Generative Agents (Park et al., Stanford)",
+    "authors": "Park, O'Brien, Cai, Morris, Liang, Bernstein",
+    "year": 2023,
+    "type": "paper",
+    "subject": "Multi-Agent Safety",
+    "rel": 5,
+    "must_know": true,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2304.03442",
+    "why": "The architectural reference for multi-agent LLM simulation; open-source codebase."
+  },
+  {
+    "title": "LLM-ABM Stock Simulation",
+    "authors": "Mihir Chhiber et al.",
+    "year": 2024,
+    "type": "paper",
+    "subject": "Multi-Agent Safety",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://github.com/mihirchhiber/LLM-ABM-StockSim",
+    "why": "Heterogeneous LLM agents in a market simulation, with personality-driven differentiation."
+  },
+  {
+    "title": "Generative Agent-Based Modeling (Park lab)",
+    "authors": "Park et al.",
+    "year": 2024,
+    "type": "paper",
+    "subject": "Multi-Agent Safety",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2407.06059",
+    "why": "Extends generative agents to socioeconomic modeling."
+  },
+  {
+    "title": "UK AISI Research Agenda",
+    "authors": "UK AI Safety Institute",
+    "year": 2025,
+    "type": "blog",
+    "subject": "AI Governance",
+    "rel": 3,
+    "must_know": true,
+    "hot": false,
+    "link": "https://www.aisi.gov.uk/research-agenda",
+    "why": "A government safety-institute's research priorities."
+  },
+  {
+    "title": "GovAI Working Papers",
+    "authors": "GovAI (Oxford)",
+    "year": 2025,
+    "type": "blog",
+    "subject": "AI Governance",
+    "rel": 2,
+    "must_know": true,
+    "hot": false,
+    "link": "https://www.governance.ai/research",
+    "why": "A premier academic AI-governance center."
+  },
+  {
+    "title": "CSET Research",
+    "authors": "CSET / Georgetown",
+    "year": 2025,
+    "type": "blog",
+    "subject": "AI Governance",
+    "rel": 2,
+    "must_know": false,
+    "hot": false,
+    "link": "https://cset.georgetown.edu/",
+    "why": "Policy-side AI-safety research with a strong technical-governance bridge."
+  },
+  {
+    "title": "Large Language Models as Simulated Economic Agents (Homo Silicus)",
+    "authors": "Horton, Filippas, Manning",
+    "year": 2023,
+    "type": "paper",
+    "subject": "LLM Agent Experiments",
+    "rel": 5,
+    "must_know": true,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2301.07543",
+    "why": "The foundational 'homo silicus' framing — LLMs as computational subjects in economic experiments."
+  },
+  {
+    "title": "Using LLMs to Simulate Multiple Humans (Turing Experiments)",
+    "authors": "Aher, Arriaga, Kalai",
+    "year": 2023,
+    "type": "paper",
+    "subject": "LLM Agent Experiments",
+    "rel": 5,
+    "must_know": true,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2208.10264",
+    "why": "The methodological backbone for LLM-as-subject experimental design (ICML 2023)."
+  },
+  {
+    "title": "An Economy of AI Agents",
+    "authors": "Hadfield & Koh",
+    "year": 2025,
+    "type": "paper",
+    "subject": "LLM Agent Experiments",
+    "rel": 5,
+    "must_know": true,
+    "hot": true,
+    "link": "https://arxiv.org/abs/2509.01063",
+    "why": "The most current economist-facing survey of the agentic-AI economic landscape."
+  },
+  {
+    "title": "Automated Social Science",
+    "authors": "Manning, Zhu & Horton",
+    "year": 2024,
+    "type": "paper",
+    "subject": "LLM Agent Experiments",
+    "rel": 5,
+    "must_know": false,
+    "hot": false,
+    "link": "https://www.nber.org/papers/w32381",
+    "why": "Operationalizes LLMs as automated social-science researchers."
+  },
+  {
+    "title": "Manning & Horton 2025 — Theory-Grounded Mixture Optimization",
+    "authors": "Manning & Horton",
+    "year": 2025,
+    "type": "paper",
+    "subject": "LLM Agent Experiments",
+    "rel": 5,
+    "must_know": false,
+    "hot": true,
+    "link": "https://www.nber.org/papers/w33724",
+    "why": "Refines homo silicus with behavioral calibration."
+  },
+  {
+    "title": "Foundation Models and Intelligent Decision-Making (survey)",
+    "authors": "Various",
+    "year": 2025,
+    "type": "paper",
+    "subject": "LLM Agent Experiments",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://www.cell.com/the-innovation/fulltext/S2666-6758(25)00151-1",
+    "why": "A cross-domain survey of foundation models in autonomous decision-making."
+  },
+  {
+    "title": "LLM Agents Do Not Replicate Human Market Traders",
+    "authors": "Henkel et al.",
+    "year": 2025,
+    "type": "paper",
+    "subject": "LLM Behavior & Calibration",
+    "rel": 5,
+    "must_know": false,
+    "hot": true,
+    "link": "https://arxiv.org/abs/2502.15800",
+    "why": "Empirical evidence that LLMs are 'textbook-rational' — motivation for behavioral-calibration research."
+  },
+  {
+    "title": "LLM Prompt Sensitivity (ProSA framework)",
+    "authors": "Various",
+    "year": 2024,
+    "type": "paper",
+    "subject": "LLM Behavior & Calibration",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2410.12405",
+    "why": "Quantifies and reduces persona/prompt variance — a building block for reproducibility."
+  },
+  {
+    "title": "Behavioral Economics of AI (Bauer et al.)",
+    "authors": "Bauer et al.",
+    "year": 2024,
+    "type": "paper",
+    "subject": "LLM Behavior & Calibration",
+    "rel": 5,
+    "must_know": false,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2410.13107",
+    "why": "A domain-specific behavioral analysis of LLM economic decision-making."
+  },
+  {
+    "title": "Pay What LLM Wants (2024)",
+    "authors": "Various",
+    "year": 2024,
+    "type": "paper",
+    "subject": "LLM Behavior & Calibration",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2410.07820",
+    "why": "Bias-adjusted LLM agents in economic experiments."
+  },
+  {
+    "title": "LLMs Prone to Fallacies in Causal Inference",
+    "authors": "Various",
+    "year": 2024,
+    "type": "paper",
+    "subject": "LLM Behavior & Calibration",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2406.04131",
+    "why": "Documents systematic causal-reasoning failures in LLMs — directly relevant to reliability."
+  },
+  {
+    "title": "Mechanism Design for LLMs (WWW 2024 Best Paper)",
+    "authors": "Various",
+    "year": 2024,
+    "type": "paper",
+    "subject": "Mechanism Design + AI",
+    "rel": 5,
+    "must_know": true,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2310.10826",
+    "why": "Best Paper at WWW 2024 — mechanism design for LLM-populated markets."
+  },
+  {
+    "title": "Strategic Collusion of LLM Agents (2024)",
+    "authors": "Various",
+    "year": 2024,
+    "type": "paper",
+    "subject": "Mechanism Design + AI",
+    "rel": 5,
+    "must_know": false,
+    "hot": true,
+    "link": "https://arxiv.org/abs/2410.00031",
+    "why": "Empirical evidence of LLM-agent collusion."
+  },
+  {
+    "title": "Strategic AI in Cournot Competition",
+    "authors": "Various",
+    "year": 2025,
+    "type": "paper",
+    "subject": "Mechanism Design + AI",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2501.07556",
+    "why": "An empirical Cournot game with LLM agents — strategic reasoning meets industrial organization."
+  },
+  {
+    "title": "Institutional AI (2025)",
+    "authors": "Various",
+    "year": 2025,
+    "type": "paper",
+    "subject": "Mechanism Design + AI",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2503.04108",
+    "why": "Institutional design for AI-populated economies; bridges economic theory and AI governance."
+  },
+  {
+    "title": "LLM-Economist (Karten)",
+    "authors": "Karten",
+    "year": 2025,
+    "type": "paper",
+    "subject": "Mechanism Design + AI",
+    "rel": 5,
+    "must_know": false,
+    "hot": true,
+    "link": "https://github.com/sethkarten/LLM-Economist",
+    "why": "A two-level Stackelberg game with LLM agents — an architectural reference for synthetic-population models."
+  },
+  {
+    "title": "ALYMPICS — Game theory simulation platform",
+    "authors": "Mou et al.",
+    "year": 2025,
+    "type": "paper",
+    "subject": "Mechanism Design + AI",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://aclanthology.org/2025.coling-main.193/",
+    "why": "An open-source platform for game-theoretic LLM-agent simulation."
+  },
+  {
+    "title": "The AI Economist (Salesforce)",
+    "authors": "Zheng et al.",
+    "year": 2022,
+    "type": "paper",
+    "subject": "Mechanism Design + AI",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2108.02755",
+    "why": "RL-based tax-policy optimization; foundational for mechanism design with learning agents."
+  },
+  {
+    "title": "Magentic Marketplace (Microsoft)",
+    "authors": "Microsoft",
+    "year": 2024,
+    "type": "paper",
+    "subject": "Mechanism Design + AI",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://github.com/microsoft/multi-agent-marketplace",
+    "why": "A multi-agent marketplace simulation with a welfare/fairness measurement framework."
+  },
+  {
+    "title": "Causal Inference with LLMs: A Survey (NAACL 2025)",
+    "authors": "Ma et al.",
+    "year": 2025,
+    "type": "paper",
+    "subject": "Causal Inference + LLM",
+    "rel": 5,
+    "must_know": true,
+    "hot": false,
+    "link": "https://aclanthology.org/2025.findings-naacl.327/",
+    "why": "The most comprehensive survey of LLM-assisted causal inference."
+  },
+  {
+    "title": "LLMs and Causal Inference: Comprehensive Survey",
+    "authors": "Liu, Xu et al.",
+    "year": 2025,
+    "type": "paper",
+    "subject": "Causal Inference + LLM",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://aclanthology.org/2025.findings-naacl.427/",
+    "why": "A companion cross-domain causal-inference review."
+  },
+  {
+    "title": "Executable Counterfactuals (2025)",
+    "authors": "Various",
+    "year": 2025,
+    "type": "paper",
+    "subject": "Causal Inference + LLM",
+    "rel": 4,
+    "must_know": false,
+    "hot": true,
+    "link": "https://arxiv.org/abs/2503.09033",
+    "why": "Generating runnable counterfactuals via LLMs — a methodological innovation."
+  },
+  {
+    "title": "Causal ML Requires Rigorous Synthetic Experiments",
+    "authors": "Various",
+    "year": 2025,
+    "type": "paper",
+    "subject": "Causal Inference + LLM",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2502.13977",
+    "why": "A validation framework for LLM-generated counterfactuals."
+  },
+  {
+    "title": "GPTs are GPTs (Eloundou et al.)",
+    "authors": "Eloundou, Manning, Mishkin, Rock",
+    "year": 2023,
+    "type": "paper",
+    "subject": "AI Macro & Labor",
+    "rel": 3,
+    "must_know": true,
+    "hot": false,
+    "link": "https://arxiv.org/abs/2303.10130",
+    "why": "Foundational labor-exposure analysis — 80% of the US workforce exposed (Science, 2024)."
+  },
+  {
+    "title": "AI and the Labor Market (Brynjolfsson et al.)",
+    "authors": "Brynjolfsson, Li, Raymond",
+    "year": 2024,
+    "type": "paper",
+    "subject": "AI Macro & Labor",
+    "rel": 2,
+    "must_know": false,
+    "hot": false,
+    "link": "https://www.nber.org/papers/w31161",
+    "why": "An empirical study of AI's effect on worker productivity at scale."
+  },
+  {
+    "title": "Power and Progress (Acemoglu & Johnson)",
+    "authors": "Acemoglu & Johnson",
+    "year": 2023,
+    "type": "book",
+    "subject": "AI Macro & Labor",
+    "rel": 2,
+    "must_know": false,
+    "hot": false,
+    "link": "https://www.basicbooks.com/titles/daron-acemoglu/power-and-progress/9781541702530/",
+    "why": "The political economy of automation."
+  },
+  {
+    "title": "Scenarios for the Transition to AGI (Korinek & Suh)",
+    "authors": "Korinek & Suh",
+    "year": 2024,
+    "type": "paper",
+    "subject": "AI Macro & Labor",
+    "rel": 2,
+    "must_know": false,
+    "hot": false,
+    "link": "https://www.nber.org/papers/w32255",
+    "why": "AGI macroeconomic scenarios."
+  },
+  {
+    "title": "Transformative AI Macro (Trammell & Korinek)",
+    "authors": "Trammell & Korinek",
+    "year": 2023,
+    "type": "paper",
+    "subject": "AI Macro & Labor",
+    "rel": 2,
+    "must_know": false,
+    "hot": false,
+    "link": "https://www.nber.org/papers/w31256",
+    "why": "Long-run macro modeling of transformative AI; a theoretical foundation."
+  },
+  {
+    "title": "Epoch AI — Capability and Compute Trends",
+    "authors": "Epoch AI",
+    "year": 2025,
+    "type": "blog",
+    "subject": "AI Forecasting",
+    "rel": 2,
+    "must_know": true,
+    "hot": false,
+    "link": "https://epochai.org/",
+    "why": "A premier quantitative forecasting org for AI capabilities."
+  },
+  {
+    "title": "Preparing for the Intelligence Explosion (MacAskill et al.)",
+    "authors": "MacAskill, Moorhouse, Beard",
+    "year": 2025,
+    "type": "blog",
+    "subject": "AI Forecasting",
+    "rel": 2,
+    "must_know": true,
+    "hot": true,
+    "link": "https://www.forethought.org/research/preparing-for-the-intelligence-explosion",
+    "why": "Strategic framing for transformative-AI preparation."
+  },
+  {
+    "title": "AI Index Report (Stanford HAI)",
+    "authors": "Stanford HAI",
+    "year": 2025,
+    "type": "paper",
+    "subject": "AI Forecasting",
+    "rel": 2,
+    "must_know": false,
+    "hot": false,
+    "link": "https://aiindex.stanford.edu/",
+    "why": "An annual quantitative report on AI progress."
+  },
+  {
+    "title": "Homo Silicus (Horton's actual code)",
+    "authors": "John J. Horton",
+    "year": 2023,
+    "type": "course",
+    "subject": "Behavioral / Scenario Modeling",
+    "rel": 5,
+    "must_know": false,
+    "hot": false,
+    "link": "https://github.com/johnjosephhorton/homo_silicus",
+    "why": "Working code from the foundational homo-silicus paper."
+  },
+  {
+    "title": "DeerFlow (Bytedance, 70K stars)",
+    "authors": "Bytedance",
+    "year": 2025,
+    "type": "course",
+    "subject": "Agentic Harnesses",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://github.com/bytedance/deer-flow",
+    "why": "A production sub-agent isolation pattern."
+  },
+  {
+    "title": "DeepAgents (LangChain)",
+    "authors": "LangChain",
+    "year": 2025,
+    "type": "course",
+    "subject": "Agentic Harnesses",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://github.com/langchain-ai/deepagents",
+    "why": "A lighter-weight agentic harness with a good filesystem abstraction."
+  },
+  {
+    "title": "AgentMemory (4-tier persistence)",
+    "authors": "Rohit Ghumare",
+    "year": 2025,
+    "type": "course",
+    "subject": "Agentic Harnesses",
+    "rel": 5,
+    "must_know": false,
+    "hot": false,
+    "link": "https://github.com/rohitg00/agentmemory",
+    "why": "Lifecycle hooks for firing belief snapshots in agentic systems."
+  },
+  {
+    "title": "Anthropic Cookbook — Agentic Patterns",
+    "authors": "Anthropic",
+    "year": 2024,
+    "type": "course",
+    "subject": "Agentic Harnesses",
+    "rel": 5,
+    "must_know": true,
+    "hot": false,
+    "link": "https://github.com/anthropics/anthropic-cookbook/tree/main/patterns/agents",
+    "why": "Official agentic building-block patterns."
+  },
+  {
+    "title": "PyRIT — Microsoft Red-Team Framework",
+    "authors": "Microsoft",
+    "year": 2024,
+    "type": "course",
+    "subject": "Agentic Harnesses",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://github.com/Azure/PyRIT",
+    "why": "Red-teaming attack primitives for adversarial agents."
+  },
+  {
+    "title": "AI Scientist (Sakana v1)",
+    "authors": "Sakana AI",
+    "year": 2024,
+    "type": "paper",
+    "subject": "Agentic Harnesses",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://github.com/SakanaAI/AI-Scientist",
+    "why": "A fully automated research loop; precursor to v2."
+  },
+  {
+    "title": "AI Scientist v2 (Sakana)",
+    "authors": "Sakana AI",
+    "year": 2025,
+    "type": "paper",
+    "subject": "Agentic Harnesses",
+    "rel": 5,
+    "must_know": false,
+    "hot": true,
+    "link": "https://github.com/SakanaAI/AI-Scientist-v2",
+    "why": "Progressive agentic tree search — a reference for skill-evolution patterns."
+  },
+  {
+    "title": "Stanford STORM (Knowledge Curation)",
+    "authors": "Stanford OVAL",
+    "year": 2024,
+    "type": "course",
+    "subject": "Agentic Harnesses",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://github.com/stanford-oval/storm",
+    "why": "A multi-agent research pipeline (retriever + expert + moderator), DSPy-based."
+  },
+  {
+    "title": "DSPy Framework",
+    "authors": "Stanford NLP",
+    "year": 2024,
+    "type": "course",
+    "subject": "Agentic Harnesses",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://github.com/stanfordnlp/dspy",
+    "why": "Programmatic LLM pipelines — a strong framework for reproducible LLM systems."
+  },
+  {
+    "title": "Anthropic Economic Index — Reports",
+    "authors": "Anthropic Institute",
+    "year": 2026,
+    "type": "blog",
+    "subject": "Anthropic Economic Index",
+    "rel": 5,
+    "must_know": true,
+    "hot": true,
+    "link": "https://www.anthropic.com/research",
+    "why": "Anthropic's measurement of AI's real economic footprint; new reports released quarterly."
+  },
+  {
+    "title": "CLIO Paper (Anthropic Economic Index)",
+    "authors": "Anthropic",
+    "year": 2025,
+    "type": "paper",
+    "subject": "Anthropic Economic Index",
+    "rel": 5,
+    "must_know": true,
+    "hot": false,
+    "link": "https://assets.anthropic.com/m/1f88b6dadc12e69d/original/Anthropic-Economic-Index-Report-1.pdf",
+    "why": "The methodology paper behind Anthropic's Economic Index."
+  },
+  {
+    "title": "Anthropic Fellows Program 2026",
+    "authors": "Anthropic",
+    "year": 2026,
+    "type": "program",
+    "subject": "Fellowships & Courses",
+    "rel": 5,
+    "must_know": true,
+    "hot": true,
+    "link": "https://alignment.anthropic.com/2025/anthropic-fellows-program-2026/",
+    "why": "Mentored frontier AI-safety research, with stipend and compute."
+  },
+  {
+    "title": "MATS Program 2026",
+    "authors": "MATS",
+    "year": 2026,
+    "type": "program",
+    "subject": "Fellowships & Courses",
+    "rel": 4,
+    "must_know": true,
+    "hot": true,
+    "link": "https://www.matsprogram.org/",
+    "why": "A 10-week mentored AI-safety apprenticeship in Berkeley / London."
+  },
+  {
+    "title": "BlueDot Impact AGI Strategy Course",
+    "authors": "BlueDot Impact",
+    "year": 2025,
+    "type": "course",
+    "subject": "Fellowships & Courses",
+    "rel": 3,
+    "must_know": true,
+    "hot": false,
+    "link": "https://bluedot.org/",
+    "why": "A structured AGI-strategy course."
+  },
+  {
+    "title": "Open Philanthropy — Technical AI Safety RFP",
+    "authors": "Open Philanthropy",
+    "year": 2026,
+    "type": "program",
+    "subject": "Funding RFPs",
+    "rel": 3,
+    "must_know": false,
+    "hot": true,
+    "link": "https://coefficientgiving.org/request-for-proposals-technical-ai-safety-research",
+    "why": "An open RFP with 21 priority areas — a useful map of funded directions."
+  },
+  {
+    "title": "Successif (free career coaching)",
+    "authors": "Successif",
+    "year": 2025,
+    "type": "program",
+    "subject": "Fellowships & Courses",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://successif.org/",
+    "why": "Free one-on-one coaching specialized for AI-safety transitions."
+  },
+  {
+    "title": "Long-Term Future Fund (LTFF)",
+    "authors": "EA Funds",
+    "year": 2026,
+    "type": "program",
+    "subject": "Funding RFPs",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://funds.effectivealtruism.org/funds/far-future",
+    "why": "Rolling applications for AI-safety upskilling grants."
+  },
+  {
+    "title": "SPAR Spring 2026",
+    "authors": "SPAR",
+    "year": 2026,
+    "type": "program",
+    "subject": "Fellowships & Courses",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://sparai.org/projects/sp26/",
+    "why": "130+ mentored research projects — a broader aperture than MATS."
+  },
+  {
+    "title": "Lens Academy (Luc Brinkman, Zurich)",
+    "authors": "Lens Academy",
+    "year": 2025,
+    "type": "course",
+    "subject": "Fellowships & Courses",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://lens.academy/",
+    "why": "A short pre-doc orientation to AI-safety research."
+  },
+  {
+    "title": "AI Safety Events Newsletter",
+    "authors": "Various",
+    "year": 2026,
+    "type": "newsletter",
+    "subject": "Newsletters",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://aisafety.training/",
+    "why": "A weekly digest of events, programs, and opportunities."
+  },
+  {
+    "title": "AI Alignment Slack",
+    "authors": "Community",
+    "year": 2026,
+    "type": "program",
+    "subject": "Fellowships & Courses",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://aisafety.com/",
+    "why": "One of the largest real-time AI-safety communities."
+  },
+  {
+    "title": "ENAIS Slack (European AI Safety)",
+    "authors": "ENAIS",
+    "year": 2026,
+    "type": "program",
+    "subject": "Fellowships & Courses",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://enais.co/",
+    "why": "A European AI-safety network."
+  },
+  {
+    "title": "80,000 Hours Podcast",
+    "authors": "80,000 Hours",
+    "year": 2025,
+    "type": "podcast",
+    "subject": "Podcasts",
+    "rel": 4,
+    "must_know": true,
+    "hot": false,
+    "link": "https://80000hours.org/podcast/",
+    "why": "The best single weekly digest for the AI-safety landscape."
+  },
+  {
+    "title": "Dwarkesh Podcast",
+    "authors": "Dwarkesh Patel",
+    "year": 2025,
+    "type": "podcast",
+    "subject": "Podcasts",
+    "rel": 4,
+    "must_know": false,
+    "hot": true,
+    "link": "https://www.dwarkeshpatel.com/",
+    "why": "Long-form interviews with frontier AI researchers; best for understanding lab-leadership thinking."
+  },
+  {
+    "title": "AXRP (AI X-risk Research Podcast)",
+    "authors": "Daniel Filan",
+    "year": 2025,
+    "type": "podcast",
+    "subject": "Podcasts",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://axrp.net/",
+    "why": "Deep technical interviews with alignment researchers."
+  },
+  {
+    "title": "Cognitive Revolution Podcast",
+    "authors": "Nathan Labenz",
+    "year": 2025,
+    "type": "podcast",
+    "subject": "Podcasts",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://www.cognitiverevolution.ai/",
+    "why": "Frequent capability updates and interviews."
+  },
+  {
+    "title": "Import AI (Jack Clark, Anthropic)",
+    "authors": "Jack Clark",
+    "year": 2026,
+    "type": "newsletter",
+    "subject": "Newsletters",
+    "rel": 5,
+    "must_know": true,
+    "hot": false,
+    "link": "https://importai.substack.com/",
+    "why": "The best weekly newsletter; reading it consistently is field fluency."
+  },
+  {
+    "title": "AI Snake Oil (Narayanan & Kapoor)",
+    "authors": "Arvind Narayanan, Sayash Kapoor",
+    "year": 2026,
+    "type": "newsletter",
+    "subject": "Newsletters",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://www.aisnakeoil.com/",
+    "why": "A critical perspective that counter-balances AI hype."
+  },
+  {
+    "title": "Epoch AI Newsletter",
+    "authors": "Epoch AI",
+    "year": 2026,
+    "type": "newsletter",
+    "subject": "Newsletters",
+    "rel": 2,
+    "must_know": false,
+    "hot": false,
+    "link": "https://epochai.org/",
+    "why": "Monthly compute trends and capability forecasts."
+  },
+  {
+    "title": "Alignment Newsletter",
+    "authors": "Various",
+    "year": 2026,
+    "type": "newsletter",
+    "subject": "Newsletters",
+    "rel": 4,
+    "must_know": false,
+    "hot": false,
+    "link": "https://rohinshah.com/alignment-newsletter/",
+    "why": "Curated AI-safety paper summaries with an alignment-technical focus."
+  },
+  {
+    "title": "Anthropic Blog",
+    "authors": "Anthropic",
+    "year": 2026,
+    "type": "blog",
+    "subject": "Lab Blogs",
+    "rel": 5,
+    "must_know": true,
+    "hot": false,
+    "link": "https://www.anthropic.com/news",
+    "why": "All Anthropic research and Economic Index reports."
+  },
+  {
+    "title": "OpenAI Research Blog",
+    "authors": "OpenAI",
+    "year": 2026,
+    "type": "blog",
+    "subject": "Lab Blogs",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://openai.com/research",
+    "why": "Capability announcements and research drops."
+  },
+  {
+    "title": "DeepMind Research Blog",
+    "authors": "Google DeepMind",
+    "year": 2026,
+    "type": "blog",
+    "subject": "Lab Blogs",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://deepmind.google/discover/blog/",
+    "why": "Strong on capability evals and scalable oversight."
+  },
+  {
+    "title": "METR Blog",
+    "authors": "METR",
+    "year": 2026,
+    "type": "blog",
+    "subject": "Lab Blogs",
+    "rel": 5,
+    "must_know": false,
+    "hot": false,
+    "link": "https://metr.org/blog/",
+    "why": "Capability evaluations of frontier models."
+  },
+  {
+    "title": "Apollo Research",
+    "authors": "Apollo Research",
+    "year": 2026,
+    "type": "blog",
+    "subject": "Lab Blogs",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://www.apolloresearch.ai/",
+    "why": "Deceptive alignment and evals; smaller but high-quality."
+  },
+  {
+    "title": "FAR AI Blog",
+    "authors": "FAR AI",
+    "year": 2026,
+    "type": "blog",
+    "subject": "Lab Blogs",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://far.ai/",
+    "why": "An independent alignment research org; good on multi-agent safety."
+  },
+  {
+    "title": "LessWrong (AI tags)",
+    "authors": "LessWrong community",
+    "year": 2026,
+    "type": "blog",
+    "subject": "Lab Blogs",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://www.lesswrong.com/",
+    "why": "AI-safety community discussion; follow the 'AI' and 'alignment' tags."
+  },
+  {
+    "title": "AI Alignment Forum",
+    "authors": "Alignment Forum",
+    "year": 2026,
+    "type": "blog",
+    "subject": "Lab Blogs",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://www.alignmentforum.org/",
+    "why": "The more technical sister-site to LessWrong."
+  },
+  {
+    "title": "EA Forum (AI safety section)",
+    "authors": "EA Forum",
+    "year": 2026,
+    "type": "blog",
+    "subject": "Lab Blogs",
+    "rel": 3,
+    "must_know": false,
+    "hot": false,
+    "link": "https://forum.effectivealtruism.org/",
+    "why": "Career-focused and funding discussions."
+  }
+];
+document.getElementById("rev-banner").textContent = "Static · 101 curated items · last refreshed 2026-06";
+// =============================================================================
+// Field Compass — public build. Single relevance score per item (no person lens).
+// =============================================================================
+const SUBJECT_PARENT = {};
+Object.entries(TAXONOMY).forEach(([parent, children]) => {
+  children.forEach(c => SUBJECT_PARENT[c] = parent);
+});
+
+// ---- STATE ----
+let activeSubjects = new Set();
+let activeTypes = new Set();
+let activeYears = new Set();
+let searchQuery = "";
+
+const ACCENT = "#7b9aff";
+
+// ---- RELEVANCE ----
+function relevanceFor(item) { return item.rel; }
+function isHighRelevance(item) { return item.rel >= 3; }
+
+// ---- STATS ----
+function renderStats() {
+  const total = ITEMS.length;
+  const byType = {};
+  ITEMS.forEach(i => byType[i.type] = (byType[i.type] || 0) + 1);
+  const mustKnow = ITEMS.filter(i => i.must_know).length;
+  const hot = ITEMS.filter(i => i.hot).length;
+  document.getElementById("stats").innerHTML = `
+    <span class="stat"><b>${total}</b> curated items</span>
+    <span class="stat"><b>${mustKnow}</b> must-knows</span>
+    <span class="stat"><b>${hot}</b> hot</span>
+    <span class="stat"><b>${Object.keys(byType).length}</b> types</span>
+  `;
+}
+
+// ---- TREEMAP (Plotly zoomable sunburst) ----
+function renderTreemap() {
+  const container = document.getElementById("treemap");
+  container.innerHTML = "";
+
+  const CAT_COLORS = {
+    "AI Safety":          "#3a4670",
+    "AI + Economics":     "#2f6357",
+    "Methods & Tools":    "#6e5638",
+    "Programs & Funding": "#553f70",
+    "Media":              "#6e3a40"
+  };
+
+  const ids = [], labels = [], parents = [], values = [], colors = [], hovertexts = [];
+  const cdMap = [];
+
+  ids.push("root"); labels.push("AI Field"); parents.push(""); values.push(0);
+  colors.push("rgba(22, 25, 34, 1)");
+  hovertexts.push("<b>AI Field</b><br>AI Safety × AI Economics<br><i>Click any slice to drill in</i>");
+  cdMap.push({ type: "root" });
+
+  let itemIdCounter = 0;
+  let rootSum = 0;
+
+  Object.entries(TAXONOMY).forEach(([cat, subjs]) => {
+    const subjBundles = subjs.map(subj => ({
+      subj, items: ITEMS.filter(i => i.subject === subj)
+    })).filter(b => b.items.length > 0);
+    if (subjBundles.length === 0) return;
+
+    const catId = `cat_${cat.replace(/\W+/g, "_")}`;
+    let catSum = 0;
+    const catNodeIdx = ids.length;
+
+    ids.push(catId); labels.push(cat); parents.push("root"); values.push(0);
+    colors.push(CAT_COLORS[cat] || ACCENT);
+    cdMap.push({ type: "category", category: cat });
+    const catTotalItems = subjBundles.reduce((s, b) => s + b.items.length, 0);
+    hovertexts.push(`<b>${cat}</b><br>${subjBundles.length} subjects · ${catTotalItems} items<br><i>Click to drill into subjects</i>`);
+
+    subjBundles.forEach(({ subj, items }) => {
+      const subjId = `subj_${subj.replace(/\W+/g, "_")}`;
+      const subjNodeIdx = ids.length;
+      let subjSum = 0;
+      const avgRel = items.reduce((s,i) => s + i.rel, 0) / items.length;
+
+      const subjColor = (() => {
+        const base = CAT_COLORS[cat] || ACCENT;
+        if (avgRel >= 4) return base;
+        if (avgRel >= 3) return tintColor(base, 0.6);
+        if (avgRel >= 2) return tintColor(base, 0.35);
+        return "rgba(80, 88, 108, 0.85)";
+      })();
+
+      ids.push(subjId); labels.push(subj); parents.push(catId); values.push(0);
+      colors.push(subjColor);
+      cdMap.push({ type: "subject", subject: subj, category: cat });
+      hovertexts.push(`<b>${subj}</b><br>${items.length} items<br>avg relevance ${avgRel.toFixed(1)}/5<br><i>Click to drill into items</i>`);
+
+      const sorted = [...items].sort((a, b) => {
+        if (a.hot !== b.hot) return (b.hot ? 1 : 0) - (a.hot ? 1 : 0);
+        if (a.must_know !== b.must_know) return (b.must_know ? 1 : 0) - (a.must_know ? 1 : 0);
+        return b.rel - a.rel;
+      });
+
+      sorted.forEach(item => {
+        const rel = item.rel;
+        const itemValue = Math.max(0.6, 1 + rel * 0.4);
+        subjSum += itemValue;
+
+        let itemColor;
+        if (item.hot) itemColor = "#d9636e";
+        else if (item.must_know) itemColor = "#dba050";
+        else if (rel >= 4.5) itemColor = ACCENT;
+        else if (rel >= 3.5) itemColor = "#5fc28a";
+        else itemColor = "#7d869e";
+
+        const itemId = `item_${itemIdCounter++}`;
+        ids.push(itemId);
+        labels.push(item.title.length > 38 ? item.title.substring(0, 37) + "…" : item.title);
+        parents.push(subjId);
+        values.push(itemValue);
+        colors.push(itemColor);
+        cdMap.push({ type: "item", item: item });
+
+        const badges = (item.must_know ? "[MUST] " : "") + (item.hot ? "[HOT] " : "");
+        hovertexts.push(
+          `<b>${item.title}</b><br>${item.authors}<br>${item.year} · ${item.type}<br><br>` +
+          `${item.why}<br><br>` +
+          `${badges}Relevance ${item.rel}/5<br><br>` +
+          `<i>Click to open link</i>`
+        );
+      });
+
+      values[subjNodeIdx] = subjSum;
+      catSum += subjSum;
+    });
+
+    values[catNodeIdx] = catSum;
+    rootSum += catSum;
+  });
+
+  values[0] = rootSum;
+
+  const data = [{
+    type: "sunburst",
+    ids, labels, parents, values,
+    branchvalues: "total",
+    marker: { colors, line: { color: "#0c0e14", width: 1.5 } },
+    textfont: { family: "DM Sans", size: 12, color: "#ffffff" },
+    insidetextorientation: "radial",
+    hovertext: hovertexts,
+    hoverinfo: "text",
+    maxdepth: 2,
+    leaf: { opacity: 0.92 },
+    rotation: 90
+  }];
+
+  const layout = {
+    margin: { l: 10, r: 10, t: 12, b: 12 },
+    paper_bgcolor: "#161922",
+    plot_bgcolor: "#161922",
+    font: { family: "DM Sans", color: "#dfe3ed" },
+    hoverlabel: { bgcolor: "#161922", bordercolor: ACCENT,
+      font: { family: "DM Sans", color: "#dfe3ed", size: 12 }, align: "left" }
+  };
+
+  Plotly.newPlot(container, data, layout, { displayModeBar: false, responsive: true }).then(() => {
+    container.on("plotly_sunburstclick", (eventData) => {
+      if (!eventData || !eventData.points || !eventData.points.length) return;
+      const pointIndex = eventData.points[0].pointNumber;
+      const cd = cdMap[pointIndex];
+      if (cd && cd.type === "item" && cd.item.link) {
+        window.open(cd.item.link, "_blank");
+        return false;
+      }
+    });
+  });
+}
+
+function tintColor(hex, weight) {
+  const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (!m) return hex;
+  const r = parseInt(m[1], 16), g = parseInt(m[2], 16), b = parseInt(m[3], 16);
+  const br = 29, bg = 33, bb = 48;
+  const nr = Math.round(r * weight + br * (1 - weight));
+  const ng = Math.round(g * weight + bg * (1 - weight));
+  const nb = Math.round(b * weight + bb * (1 - weight));
+  return `rgb(${nr},${ng},${nb})`;
+}
+
+// ---- UNDEREXPLORED SCATTER ----
+function renderUnderexplored() {
+  const allSubjects = Object.values(TAXONOMY).flat();
+  const subjData = allSubjects.map(subj => {
+    const items = ITEMS.filter(i => i.subject === subj);
+    if (!items.length) return null;
+    const avgRel = items.reduce((s,i) => s + i.rel, 0) / items.length;
+    const recent = items.filter(i => i.year >= 2025).length;
+    return { subj, count: items.length, avgRel, recent };
+  }).filter(Boolean);
+
+  const maxCount = Math.max(...subjData.map(d => d.count));
+  subjData.forEach(d => d.scarcity = 1 - (d.count / maxCount));
+
+  const isOpp = d => d.avgRel >= 3.2 && d.scarcity >= 0.45;
+  const maxRecent = Math.max(...subjData.map(d => d.recent), 1);
+
+  const trace = {
+    type: "scatter", mode: "markers+text",
+    x: subjData.map(d => d.avgRel),
+    y: subjData.map(d => d.scarcity),
+    text: subjData.map(d => isOpp(d) ? `<b>${d.subj}</b>` : d.subj),
+    textposition: "top center",
+    textfont: { family: "DM Sans", size: 11, color: "#dfe3ed" },
+    marker: {
+      color: subjData.map(d => d.recent),
+      colorscale: [[0,"#3a4055"],[0.25,"#6e7689"],[0.5,"#dba050"],[0.75,"#5fc28a"],[1,"#7b9aff"]],
+      cmin: 0, cmax: maxRecent, showscale: true,
+      colorbar: { title: { text: "recent<br>items<br>(2025+)", font: { color: "#dfe3ed", size: 11 } },
+        thickness: 12, len: 0.6, tickfont: { color: "#8b93a7", size: 10 }, outlinecolor: "#282d3e" },
+      size: subjData.map(d => isOpp(d) ? Math.max(32, 32 + d.recent * 5) : Math.max(20, 20 + d.recent * 3)),
+      opacity: subjData.map(d => isOpp(d) ? 1.0 : 0.78),
+      line: { color: subjData.map(d => isOpp(d) ? ACCENT : "#0c0e14"),
+        width: subjData.map(d => isOpp(d) ? 3.5 : 1) }
+    },
+    hovertemplate: subjData.map(d =>
+      `<b>${d.subj}</b>${isOpp(d) ? " ★" : ""}<br>avg relevance: ${d.avgRel.toFixed(2)}<br>scarcity: ${d.scarcity.toFixed(2)}<br>recent items: ${d.recent}<extra></extra>`
+    ),
+    showlegend: false
+  };
+
+  const shapes = [
+    { type:"rect", xref:"x", yref:"y", x0:3.2, y0:0.45, x1:5.3, y1:1.05,
+      fillcolor:"rgba(180,142,255,0.10)", line:{ color:"rgba(180,142,255,0.4)", width:1.5, dash:"dot" } },
+    { type:"rect", xref:"x", yref:"y", x0:3.2, y0:-0.05, x1:5.3, y1:0.45,
+      fillcolor:"rgba(61,217,160,0.05)", line:{ color:"rgba(61,217,160,0.2)", width:1, dash:"dot" } },
+    { type:"rect", xref:"x", yref:"y", x0:0, y0:0.45, x1:3.2, y1:1.05,
+      fillcolor:"rgba(219,160,80,0.05)", line:{ color:"rgba(219,160,80,0.15)", width:1, dash:"dot" } },
+    { type:"rect", xref:"x", yref:"y", x0:0, y0:-0.05, x1:3.2, y1:0.45,
+      fillcolor:"rgba(64,70,86,0.05)", line:{ color:"rgba(64,70,86,0.15)", width:1, dash:"dot" } }
+  ];
+
+  const annotations = [
+    { x:4.25, y:1.04, xref:"x", yref:"y", text:"★ OPPORTUNITY ZONE", showarrow:false,
+      font:{ family:"DM Sans", color:"#b48eff", size:13, weight:700 } },
+    { x:4.25, y:-0.02, xref:"x", yref:"y", text:"saturated · relevant but crowded", showarrow:false,
+      font:{ family:"DM Sans", color:"#3dd9a0", size:11 } },
+    { x:1.6, y:1.04, xref:"x", yref:"y", text:"niche · scarce but off-target", showarrow:false,
+      font:{ family:"DM Sans", color:"#dba050", size:11 } },
+    { x:1.6, y:-0.02, xref:"x", yref:"y", text:"noise · low-signal", showarrow:false,
+      font:{ family:"DM Sans", color:"#6e7689", size:11 } }
+  ];
+
+  const layout = {
+    margin: { l:60, r:100, t:30, b:70 },
+    paper_bgcolor: "#161922", plot_bgcolor: "#161922",
+    font: { family:"DM Sans", color:"#dfe3ed", size:11 },
+    xaxis: { title:{ text:"← lower relevance   ·   higher relevance →", font:{ color:"#8b93a7", size:12 } },
+      gridcolor:"#282d3e", zeroline:false, range:[0,5.4], tickfont:{ color:"#8b93a7" } },
+    yaxis: { title:{ text:"← more saturated   ·   more scarce →", font:{ color:"#8b93a7", size:12 } },
+      gridcolor:"#282d3e", zeroline:false, range:[-0.05,1.1], tickfont:{ color:"#8b93a7" } },
+    shapes, annotations, hovermode: "closest"
+  };
+
+  Plotly.newPlot("underexplored", [trace], layout, { displayModeBar: false, responsive: true });
+  renderOpportunityCallout(subjData.filter(isOpp));
+}
+
+function renderOpportunityCallout(oppItems) {
+  const ranked = oppItems
+    .map(d => ({...d, score: d.avgRel * d.scarcity * (1 + d.recent * 0.15)}))
+    .sort((a,b) => b.score - a.score)
+    .slice(0, 4);
+
+  document.getElementById("opp-title").textContent = "★ Top Opportunity Zones";
+
+  if (ranked.length === 0) {
+    document.getElementById("opp-list").innerHTML = `
+      <div class="opp-item"><div class="on">No opportunity zones</div>
+      <div class="ow">No subjects currently land in the top-right quadrant (high relevance + high scarcity).</div></div>`;
+    return;
+  }
+
+  document.getElementById("opp-list").innerHTML = ranked.map((d, idx) => {
+    const subjItems = ITEMS.filter(i => i.subject === d.subj && i.rel >= 3)
+      .sort((a,b) => b.rel - a.rel).slice(0, 2);
+    const exampleTitles = subjItems.length
+      ? subjItems.map(i => `<a href="${i.link}" target="_blank" style="color:var(--accent);text-decoration:none">${i.title}</a>`).join(" · ")
+      : "<i>no items yet — this is genuinely unexplored</i>";
+    return `
+      <div class="opp-item">
+        <div class="on">${idx + 1}. ${d.subj}</div>
+        <div class="om">relevance ${d.avgRel.toFixed(1)}/5 · scarcity ${d.scarcity.toFixed(2)} · ${d.recent} recent items</div>
+        <div class="ow">${exampleTitles}</div>
+      </div>`;
+  }).join("");
+}
+
+// ---- MUST-KNOWS ----
+function renderMustKnows() {
+  const items = ITEMS.filter(i => i.must_know).sort((a,b) => b.rel - a.rel);
+  document.getElementById("must-knows-list").innerHTML = items.map(item => `
+    <div class="mini-card">
+      <div class="mt"><a href="${item.link}" target="_blank">${item.title}</a></div>
+      <div class="mm">${item.authors} · ${item.year} · ${item.type}</div>
+    </div>`).join("");
+}
+
+// ---- HOT ----
+function renderHot() {
+  const items = ITEMS.filter(i => i.hot).sort((a,b) => b.year - a.year);
+  document.getElementById("hot-list").innerHTML = items.map(item => `
+    <div class="mini-card">
+      <div class="mt"><a href="${item.link}" target="_blank">${item.title}</a></div>
+      <div class="mm">${item.authors} · ${item.year} · ${item.subject}</div>
+    </div>`).join("");
+}
+
+// ---- CHIPS ----
+function renderChips() {
+  const subjCounts = {}, typeCounts = {}, yearCounts = {};
+  ITEMS.forEach(i => {
+    subjCounts[i.subject] = (subjCounts[i.subject] || 0) + 1;
+    typeCounts[i.type] = (typeCounts[i.type] || 0) + 1;
+    yearCounts[i.year] = (yearCounts[i.year] || 0) + 1;
+  });
+
+  const renderChipSet = (containerId, items, activeSet) => {
+    const container = document.getElementById(containerId);
+    const existingLabel = container.querySelector(".chip-label");
+    container.innerHTML = "";
+    if (existingLabel) container.appendChild(existingLabel);
+    items.forEach(([key, count]) => {
+      const chip = document.createElement("span");
+      chip.className = "chip" + (activeSet.has(key) ? " active" : "");
+      chip.textContent = `${key} (${count})`;
+      chip.addEventListener("click", () => {
+        if (activeSet.has(key)) activeSet.delete(key);
+        else activeSet.add(key);
+        renderChips();
+        renderCardGrid();
+      });
+      container.appendChild(chip);
+    });
+  };
+
+  renderChipSet("subject-chips", Object.entries(subjCounts).sort(), activeSubjects);
+  renderChipSet("type-chips", Object.entries(typeCounts).sort(), activeTypes);
+  renderChipSet("year-chips", Object.entries(yearCounts).sort((a,b) => b[0] - a[0]), activeYears);
+}
+
+// ---- CARD GRID ----
+function renderCardGrid() {
+  const q = searchQuery.toLowerCase();
+  const grid = document.getElementById("card-grid");
+  grid.innerHTML = ITEMS.map(item => {
+    let visible = true;
+    if (activeSubjects.size && !activeSubjects.has(item.subject)) visible = false;
+    if (activeTypes.size && !activeTypes.has(item.type)) visible = false;
+    if (activeYears.size && !activeYears.has(String(item.year))) visible = false;
+    if (q && !(`${item.title} ${item.authors} ${item.why}`.toLowerCase().includes(q))) visible = false;
+    if (!visible) return "";
+    return `
+      <div class="card ${item.must_know ? "must-know" : ""} ${item.hot ? "hot" : ""}">
+        <div class="ct"><a href="${item.link}" target="_blank">${item.title}</a></div>
+        <div class="ca">${item.authors} · ${item.year}</div>
+        <div class="cw">${item.why}</div>
+        <div class="cmeta">
+          <span class="pill pill-type">${item.type}</span>
+          <span class="pill pill-subj">${item.subject}</span>
+          <span class="pill pill-year">${item.year}</span>
+          ${item.must_know ? '<span class="pill pill-must">MUST</span>' : ""}
+          ${item.hot ? '<span class="pill pill-hot">HOT</span>' : ""}
+          <span class="pill pill-rel">rel ${item.rel}/5</span>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+// ---- MAIN ----
+function renderAll() {
+  renderStats();
+  renderTreemap();
+  renderUnderexplored();
+  renderMustKnows();
+  renderHot();
+  renderChips();
+  renderCardGrid();
+}
+
+document.getElementById("search").addEventListener("input", (e) => {
+  searchQuery = e.target.value;
+  renderCardGrid();
+});
+
+renderAll();
+
+</script>
+</body>
+</html>
