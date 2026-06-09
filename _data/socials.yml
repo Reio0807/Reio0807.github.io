@@ -1,0 +1,11 @@
+# Social media links and usernames. Displayed in the order defined here.
+# Docs: https://github.com/george-gca/jekyll-socials
+cv_pdf: /assets/pdf/CV_Bohan_Bai.pdf # path to your CV PDF file
+email: bbai02@berkeley.edu # your email address
+github_username: Reio0807 # your GitHub username
+rss_icon: true # comment this line to hide the RSS icon
+# Add these when you have them, then uncomment:
+# linkedin_username:        # your LinkedIn handle (the part after /in/)
+# scholar_userid:           # your Google Scholar ID
+# x_username:               # your X / Twitter handle
+# orcid_id:                 # your ORCID iD
