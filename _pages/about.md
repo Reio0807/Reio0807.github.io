@@ -131,30 +131,20 @@ latest_posts:
 })();
 </script>
 
-I'm **Bohan Bai** — a pre-doctoral researcher with a background in economics, moving deliberately
-toward **AI safety**. My training sits where economics meets machine learning: a B.A. in Economics with a CS minor from
-**UC Berkeley**, an M.S. in Quantitative Management (Business Analytics) from **Duke (Fuqua)**, and
-a pre-doctoral position building multi-agent LLM "**AI scientist**" systems for development economics
-with Prof. David Yanagizawa-Drott in Zurich.
+I build multi-agent LLM systems for economics research — and the more I build them, the more I think
+the tools *are* the safety problem. Agents that game their objectives, misaligned incentives,
+strategic behavior between models: these are economics questions as much as engineering ones, and
+that overlap is where I want to work.
 
-Day to day I work on things like LLM-simulated economic agents, causal estimation of treatment
-effects (ITT/OLS, CATE), behavioral calibration of language models, and self-improving agentic
-systems. That work has convinced me that the **economics of AI is not a side quest for AI safety —
-it is part of the core**: incentives, mechanism design, evaluation, and the labor- and
-market-level effects of increasingly capable agents all bear directly on whether advanced AI goes
-well.
+I'm trying to get from *"someone with an econ background who finds AI safety interesting"* to
+*someone who does the work* — and I'd rather do that in the open. This site is the honest version:
+what I'm reading, what I'm building, what I've changed my mind about. I try to reason in
+probabilities, say out loud what would change my mind, and stay wrong out loud until I'm less wrong.
 
-I'm still in an **exploration phase**, mapping the field across technical AI governance, AI policy,
-and technical alignment — with a particular interest in **where AI × economics can contribute to
-safety**: evaluations, multi-agent risk, mechanism design for AI-populated markets, and the
-calibration and reliability of LLMs used for decision-making.
+Right now I'm exploring across technical AI governance, policy, and alignment, with a bias toward
+**where AI × economics actually bites** — evaluations, multi-agent risk, mechanism design for
+AI-populated markets, and whether we can trust the models we hand real decisions to.
 
-This site is my open record of that journey: **[writing](/blog/)** that works through ideas,
-a **[field compass](/compass/)** mapping the AI-safety × AI-econ landscape, a curated set of
-**[resources](/resources/)** and a **[reading log](/reading/)**, the **[media](/media/)** shaping my
-thinking, the **[ideas and thinkers](/ideology/)** that influence me, and the
-**[projects](/projects/)** I've built along the way. The **[now page](/now/)** says what I'm focused
-on this month.
-
-**I'm open to roles, fellowships, and collaborations** in AI safety, AI governance, and the economics
-of AI. The best way to reach me is by [email](mailto:bbai02@berkeley.edu).
+Start with the **[Field Compass](/compass/)** or the **[blog](/blog/)**; the **[now page](/now/)**
+says what I'm on this month. **I'm open to roles, fellowships, and collaborations** — the fastest way
+to reach me is [email](mailto:bbai02@berkeley.edu).

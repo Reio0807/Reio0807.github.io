@@ -16,7 +16,7 @@ recommend them to someone starting out.
 <div class="card mt-3 p-3">
   <div class="d-flex justify-content-between align-items-baseline" style="gap:0.5rem; flex-wrap:wrap;">
     <h3 class="mb-0" style="font-size:1.15rem;">
-      {% if item.url %}<a href="{{ item.url }}" target="_blank" rel="noopener">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}
+      {% if item.link %}<a href="{{ item.link }}" target="_blank" rel="noopener">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}
     </h3>
     <span class="text-muted" style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em;">{{ item.medium_type }}</span>
   </div>

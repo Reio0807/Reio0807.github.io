@@ -3,7 +3,7 @@ title: "Large Language Models as Simulated Economic Agents (Homo Silicus)"
 authors: Horton, Filippas & Manning
 year: 2023
 date: 2026-05-01
-url: https://arxiv.org/abs/2301.07543
+link: https://arxiv.org/abs/2301.07543
 tags: [ai-economics, llm-agents]
 ---
 

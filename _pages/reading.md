@@ -16,7 +16,7 @@ than just collecting links.
 {% for entry in entries %}
 <div class="card mt-3 p-3">
   <h3 class="mb-1" style="font-size:1.15rem;">
-    {% if entry.url %}<a href="{{ entry.url }}" target="_blank" rel="noopener">{{ entry.title }}</a>{% else %}{{ entry.title }}{% endif %}
+    {% if entry.link %}<a href="{{ entry.link }}" target="_blank" rel="noopener">{{ entry.title }}</a>{% else %}{{ entry.title }}{% endif %}
   </h3>
   <p class="text-muted mb-2" style="font-size:0.85rem;">
     {% if entry.authors %}{{ entry.authors }}{% endif %}{% if entry.year %} · {{ entry.year }}{% endif %}{% if entry.date %} · read {{ entry.date | date: "%b %Y" }}{% endif %}

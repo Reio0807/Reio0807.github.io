@@ -185,11 +185,9 @@ collections:
   projects:
     output: true
   media:
-    output: true
-    permalink: /media/:name/
+    output: false
   reading:
-    output: true
-    permalink: /reading/:name/
+    output: false
 
 # -----------------------------------------------------------------------------
 # Jekyll settings

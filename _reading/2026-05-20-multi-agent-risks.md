@@ -3,7 +3,7 @@ title: "Multi-Agent Risks from Advanced AI"
 authors: Hammond et al. (Cooperative AI Foundation)
 year: 2025
 date: 2026-05-20
-url: https://arxiv.org/abs/2502.14143
+link: https://arxiv.org/abs/2502.14143
 tags: [ai-safety, multi-agent]
 ---
 
