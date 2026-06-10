@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: Economist moving into AI safety · <strong>open to roles, fellowships &amp; collaborations</strong>.
+subtitle: Pre-doctoral researcher in AI&nbsp;×&nbsp;economics, moving into AI safety · <strong>open to roles, fellowships &amp; collaborations</strong>.
 
 profile:
   align: right
@@ -46,6 +46,9 @@ latest_posts:
 
 <style>
 .bb-hero{
+  /* hero accent palette — grayish-blue into a glittering sky blue */
+  --bb-accent: #4f86c6;
+  --bb-accent-2: #5ec2ff;
   margin: 0.5rem 0 2.2rem;
   padding-bottom: 1.6rem;
   border-bottom: 1px solid var(--global-divider-color);
@@ -55,14 +58,14 @@ latest_posts:
 .bb-eyebrow{
   font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace;
   font-size: .72rem; letter-spacing: .18em; font-weight: 600;
-  color: var(--global-theme-color); opacity: .9; margin-bottom: .6rem;
+  color: var(--bb-accent); opacity: .95; margin-bottom: .6rem;
 }
 .bb-title{
   font-size: clamp(1.7rem, 4.4vw, 2.65rem); line-height: 1.12; font-weight: 800;
   letter-spacing: -.01em; margin: 0 0 .7rem;
 }
 .bb-grad{
-  background: linear-gradient(120deg, var(--global-theme-color), #b48eff 70%);
+  background: linear-gradient(120deg, #6f8db3, var(--bb-accent) 48%, var(--bb-accent-2));
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: transparent;
 }
@@ -71,8 +74,8 @@ latest_posts:
   font-size: .95rem; color: var(--global-text-color); opacity: .82;
   min-height: 1.5em; margin-bottom: 1.15rem;
 }
-.bb-arrow{ color: var(--global-theme-color); font-weight: 700; }
-.bb-cursor{ color: var(--global-theme-color); animation: bb-blink 1.05s step-end infinite; }
+.bb-arrow{ color: var(--bb-accent); font-weight: 700; }
+.bb-cursor{ color: var(--bb-accent); animation: bb-blink 1.05s step-end infinite; }
 .bb-cta{ display:flex; flex-wrap:wrap; gap:.55rem; margin-bottom:1.15rem; }
 .bb-btn{
   display:inline-block; padding:.5rem .95rem; border-radius:9px;
@@ -80,9 +83,9 @@ latest_posts:
   border:1px solid var(--global-divider-color);
   color: var(--global-text-color); transition: all .18s ease;
 }
-.bb-btn:hover{ border-color: var(--global-theme-color); color: var(--global-theme-color); transform: translateY(-1px); text-decoration:none; }
+.bb-btn:hover{ border-color: var(--bb-accent); color: var(--bb-accent); transform: translateY(-1px); text-decoration:none; }
 .bb-btn-primary{
-  background: var(--global-theme-color); color:#fff; border-color: var(--global-theme-color);
+  background: var(--bb-accent); color:#fff; border-color: var(--bb-accent);
 }
 .bb-btn-primary:hover{ color:#fff; opacity:.9; filter:brightness(1.05); }
 .bb-chips{ display:flex; flex-wrap:wrap; gap:.45rem; }
@@ -128,8 +131,8 @@ latest_posts:
 })();
 </script>
 
-I'm **Bohan Bai** — an economist by training who is moving deliberately toward **AI safety**. My
-background sits where economics meets machine learning: a B.A. in Economics with a CS minor from
+I'm **Bohan Bai** — a pre-doctoral researcher with a background in economics, moving deliberately
+toward **AI safety**. My training sits where economics meets machine learning: a B.A. in Economics with a CS minor from
 **UC Berkeley**, an M.S. in Quantitative Management (Business Analytics) from **Duke (Fuqua)**, and
 a pre-doctoral position building multi-agent LLM "**AI scientist**" systems for development economics
 with Prof. David Yanagizawa-Drott in Zurich.

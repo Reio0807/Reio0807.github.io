@@ -17,8 +17,8 @@ toc:
 
 **Bohan Bai** &nbsp;·&nbsp; Zurich, Switzerland &nbsp;·&nbsp; [bbai02@berkeley.edu](mailto:bbai02@berkeley.edu)
 
-Economist working at the intersection of AI and economics, oriented toward technical AI governance,
-policy, and alignment.
+Pre-doctoral researcher working at the intersection of AI and economics, oriented toward technical
+AI governance, policy, and alignment.
 
 ---
 
