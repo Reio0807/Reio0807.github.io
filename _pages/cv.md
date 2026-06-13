@@ -53,9 +53,9 @@ B.A. in Economics, Minor in Computer Science &nbsp;·&nbsp; Sep 2021 – Jun 202
 
 ---
 
-## Selected publication
+## Undergraduate research
 
-- **How Marriage Policy Affects Women's Labor Force Participation.** Bohan Bai. *ICGPSH*, 2023.
+- **How Marriage Policy Affects Women's Labor Force Participation.** Bohan Bai. Undergraduate conference paper, *Communications in Humanities Research* (ICGPSH), Vol. 15, 2023. [doi:10.54254/2753-7064/15/20230652](https://doi.org/10.54254/2753-7064/15/20230652)
 
 ---
 

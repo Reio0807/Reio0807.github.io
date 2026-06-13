@@ -6,7 +6,7 @@ importance: 3
 category: research
 ---
 
-An empirical economics project (published at ICGPSH 2023) examining how marriage policy shapes
+An undergraduate empirical economics project (ICGPSH 2023) examining how marriage policy shapes
 women's labor-force participation. Using PSID microdata, I applied difference-in-differences
 estimation after a structured literature review, working through the identification and
 data-handling end to end in Python (Pandas/NumPy).

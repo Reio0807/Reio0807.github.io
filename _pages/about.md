@@ -12,7 +12,7 @@ profile:
     <p>Zurich, Switzerland</p>
     <p><a href="mailto:bbai02@berkeley.edu">bbai02@berkeley.edu</a></p>
 
-selected_papers: true # includes a list of papers marked as "selected={true}"
+selected_papers: false # homepage stays focused on writing & projects, not the undergrad paper
 social: true # includes social icons at the bottom of the page
 
 announcements:
