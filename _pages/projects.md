@@ -2,7 +2,7 @@
 layout: page
 title: projects
 permalink: /projects/
-description: Research and tools I've built — each with a note on why it matters for AI safety.
+description: Research and tools I've built, each with a note on why it matters for AI safety.
 nav: true
 nav_order: 4
 display_categories: [research, tools]

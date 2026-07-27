@@ -11,7 +11,7 @@ women's labor-force participation. Using PSID microdata, I applied difference-in
 estimation after a structured literature review, working through the identification and
 data-handling end to end in Python (Pandas/NumPy).
 
-**Why it's here:** it's where I learned to take causal inference seriously — careful identification,
+**Why it's here:** it's where I learned to take causal inference seriously: careful identification,
 honest standard errors, and skepticism about what the data can and can't support. That same
 discipline is what I now bring to evaluating AI systems, where over-claiming from noisy measurements
 is the central failure mode.

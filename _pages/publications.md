@@ -2,7 +2,7 @@
 layout: page
 permalink: /publications/
 title: publications
-description: Early research. The entry below is an undergraduate conference paper — included for the work and methods, not as peer-reviewed research.
+description: Early research. The entry below is an undergraduate conference paper, included for the work and methods, not as peer-reviewed research.
 nav: false
 ---
 

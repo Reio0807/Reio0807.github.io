@@ -1,5 +1,5 @@
 ---
-title: AXRP — the AI X-risk Research Podcast
+title: "AXRP: the AI X-risk Research Podcast"
 host: Daniel Filan
 medium_type: podcast
 link: https://axrp.net/

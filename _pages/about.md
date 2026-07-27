@@ -10,7 +10,7 @@ profile:
   image_circular: false # crops the image to make it circular
   more_info: >
     <p>Zurich, Switzerland</p>
-    <p><a href="mailto:bbai02@berkeley.edu">bbai02@berkeley.edu</a></p>
+    <p><a href="mailto:bohan.bai@uzh.ch">bohan.bai@uzh.ch</a></p>
 
 selected_papers: false # homepage stays focused on writing & projects, not the undergrad paper
 social: true # includes social icons at the bottom of the page
@@ -46,7 +46,7 @@ latest_posts:
 
 <style>
 .bb-hero{
-  /* hero accent palette — grayish-blue into a glittering sky blue */
+  /* hero accent palette: grayish-blue into a glittering sky blue */
   --bb-accent: #4f86c6;
   --bb-accent-2: #5ec2ff;
   margin: 0.5rem 0 2.2rem;
@@ -111,7 +111,7 @@ latest_posts:
     'pre-doctoral researcher in AI × economics',
     'building multi-agent "AI scientist" systems',
     'mapping a path into technical AI governance',
-    'learning AI safety — in public'
+    'learning AI safety in public'
   ];
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(reduce){ el.textContent = phrases[0]; return; }
@@ -131,20 +131,20 @@ latest_posts:
 })();
 </script>
 
-I build multi-agent LLM systems for economics research — and the more I build them, the more I think
+I build multi-agent LLM systems for economics research, and the more I build them, the more I think
 the tools *are* the safety problem. Agents that game their objectives, misaligned incentives,
 strategic behavior between models: these are economics questions as much as engineering ones, and
 that overlap is where I want to work.
 
 I'm trying to get from *"someone with an econ background who finds AI safety interesting"* to
-*someone who does the work* — and I'd rather do that in the open. This site is the honest version:
+*someone who does the work*, and I'd rather do that in the open. This site is the honest version:
 what I'm reading, what I'm building, what I've changed my mind about. I try to reason in
 probabilities, say out loud what would change my mind, and stay wrong out loud until I'm less wrong.
 
 Right now I'm exploring across technical AI governance, policy, and alignment, with a bias toward
-**where AI × economics actually bites** — evaluations, multi-agent risk, mechanism design for
+**where AI × economics actually bites**: evaluations, multi-agent risk, mechanism design for
 AI-populated markets, and whether we can trust the models we hand real decisions to.
 
 Start with the **[Field Compass](/compass/)** or the **[blog](/blog/)**; the **[now page](/now/)**
-says what I'm on this month. **I'm open to roles, fellowships, and collaborations** — the fastest way
-to reach me is [email](mailto:bbai02@berkeley.edu).
+says what I'm on this month. **I'm open to roles, fellowships, and collaborations.** The fastest way
+to reach me is [email](mailto:bohan.bai@uzh.ch).

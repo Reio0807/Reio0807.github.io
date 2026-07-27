@@ -3,12 +3,12 @@ layout: page
 title: reading log
 permalink: /reading/
 nav: false
-description: An annotated log of papers and posts I'm reading as I learn the field — short takes, not summaries.
+description: An annotated log of papers and posts I'm reading as I learn the field. Short takes, not summaries.
 ---
 
 Notes-in-public. For each piece I read closely, a few sentences on what it argues, why it matters,
 and how it connects to the AI&nbsp;×&nbsp;economics-for-safety thread I'm pulling on. This is a
-working log, not a polished bibliography — it's here to keep me honest about reading deeply rather
+working log, not a polished bibliography; it's here to keep me honest about reading deeply rather
 than just collecting links.
 
 <div class="reading-list">

@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Field Compass — mapping AI safety × AI economics
+title: "Field Compass: mapping AI safety × AI economics"
 description: An interactive, hand-curated map of the AI-safety and AI-economics landscape, with relevance scoring and under-explored-zone detection.
 importance: 2
 category: tools
@@ -14,7 +14,7 @@ tracks it all. Every item is tagged, relevance-scored, and annotated with *why i
 directions.
 
 **Why it matters for safety:** building it forced me to actually read and place the literature, and
-to think structurally about where the field's attention is — and isn't. It doubles as a public study
+to think structurally about where the field's attention is, and isn't. It doubles as a public study
 artifact and a research-direction generator.
 
 [**Open the interactive Field Compass →**](/compass/)

@@ -7,7 +7,7 @@ link: https://arxiv.org/abs/2502.14143
 tags: [ai-safety, multi-agent]
 ---
 
-A taxonomy of failure modes that only appear once you have *many* interacting AI agents —
+A taxonomy of failure modes that only appear once you have *many* interacting AI agents:
 miscoordination, collusion, conflict, emergent dynamics no single agent intends. I found this
 clarifying because it gives safety vocabulary to things economists already study under other names
 (strategic interaction, market failure, mechanism design). It's the clearest bridge I've found
