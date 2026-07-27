@@ -8,7 +8,7 @@ description: What I'm focused on right now.
 ---
 
 *This is a [now page](https://nownownow.com/about): a snapshot of what has my attention this month,
-not a permanent record. Last updated June 2026.*
+not a permanent record. Last updated July 2026.*
 
 ### Working on
 
@@ -28,6 +28,8 @@ not a permanent record. Last updated June 2026.*
 
 - Mapping where I fit across technical AI governance, AI policy, and technical alignment; see the
   [Field Compass](/compass/) for how I'm thinking about the terrain.
+- Coworking at [PEAKS](https://peaks-office.ch/) at least once a week: Zurich's EA and AI safety
+  space, and my main line into the local community.
 - Talking to people working at the AI&nbsp;×&nbsp;economics-for-safety intersection. **If that's you,
   [reach out](mailto:bohan.bai@uzh.ch).**
 
