@@ -2,7 +2,7 @@
 layout: post
 title: "Why I think economists belong in AI safety"
 date: 2026-06-09 10:00:00+02:00
-description: Starting this site, and the bet behind it: that the economics of AI is part of the core of AI safety, not a footnote to it.
+description: "Starting this site, and the bet behind it: that the economics of AI is part of the core of AI safety, not a footnote to it."
 tags: [ai-safety, ai-economics]
 categories: [essays]
 featured: true
