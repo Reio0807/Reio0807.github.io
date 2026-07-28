@@ -12,6 +12,8 @@ not a permanent record. Last updated July 2026.*
 
 ### Working on
 
+- Just started an **[Effective Thesis](https://effectivethesis.org/) research fellowship** (July 2026)
+  on the **economic impact of AI**, a project I expect to run about three to six months.
 - Building and iterating multi-agent LLM "AI scientist" systems for development-economics field
   experiments: designing nudges, estimating causal effects, and stress-testing where LLM-simulated
   behavior is trustworthy and where it isn't.
