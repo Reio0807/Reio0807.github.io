@@ -4,7 +4,7 @@ title: field compass
 permalink: /compass/
 nav: true
 nav_order: 2
-description: An interactive map of the AI&nbsp;safety&nbsp;×&nbsp;AI&nbsp;economics landscape: curated papers, programs, media, and the under-explored zones where new work could land.
+description: "An interactive map of the AI&nbsp;safety&nbsp;×&nbsp;AI&nbsp;economics landscape: curated papers, programs, media, and the under-explored zones where new work could land."
 ---
 
 The **Field Compass** is a hand-curated, interactive map of the territory I'm learning: foundational
