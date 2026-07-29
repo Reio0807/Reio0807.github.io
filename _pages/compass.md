@@ -16,6 +16,13 @@ relevance is high but existing work is thin, marking candidate directions for ne
 It's a living document; I refresh it as the field moves. Use the search and chips to filter,
 click a slice in the mind-map to drill in, and click an item to open its source.
 
+**Scope note.** This maps AI safety broadly: alignment, evaluations, governance, multi-agent risk,
+and the AI&nbsp;×&nbsp;economics corner I work in. It is deliberately not a comprehensive economics
+resource. For empirical work on AI adoption and labour markets, and especially for *datasets*,
+[The Empirical Economics of AI](https://empirical-economics-of-ai.vercel.app/) (Tomás Aguirre,
+mentored by Sam Manning at GovAI) is better than anything I would build alone: 114 datasets and
+152 papers, filterable by method, source, and research focus. Start there when you need data.
+
 <div class="row justify-content-center">
   <div class="col-12 text-center mb-2">
     <a class="btn btn-sm btn-outline-primary" href="{{ '/assets/compass/index.html' | relative_url }}" target="_blank" rel="noopener">Open the compass full-screen ↗</a>

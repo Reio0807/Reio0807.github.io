@@ -50,11 +50,13 @@ are the ones I'd hand to someone entering the field from an economics or quantit
 - [GPTs are GPTs](https://arxiv.org/abs/2303.10130), Eloundou et al.; labor-market exposure to LLMs.
 - [Power and Progress](https://www.basicbooks.com/titles/daron-acemoglu/power-and-progress/9781541702530/), Acemoglu & Johnson; the political economy of automation.
 - [Anthropic Economic Index](https://www.anthropic.com/research), measuring AI's real economic footprint.
+- [The Empirical Economics of AI](https://empirical-economics-of-ai.vercel.app/), Aguirre, mentored by Manning (GovAI); 114 datasets and 152 papers on AI adoption and labour-market impact, filterable by method and data source. Start here when you need *data*, not just literature.
 - [Causal Inference with LLMs: A Survey](https://aclanthology.org/2025.findings-naacl.327/), Ma et al.; where causal inference meets language models.
 
 ## Multi-agent & agentic systems
 
 - [Multi-Agent Risks from Advanced AI](https://arxiv.org/abs/2502.14143), Hammond et al.; a taxonomy of multi-agent risk.
+- [Cooperative AI Foundation](https://www.cooperativeai.com/foundation), the organisation behind that taxonomy; research on the cooperative intelligence of advanced AI, plus grants, PhD fellowships, and conference workshops. See also *Programs* below.
 - [Generative Agents](https://arxiv.org/abs/2304.03442), Park et al. (Stanford); the architectural reference for multi-agent LLM simulation.
 - [Strategic Collusion of LLM Agents](https://arxiv.org/abs/2410.00031), empirical evidence of LLM-agent collusion.
 - [Anthropic Cookbook, agentic patterns](https://github.com/anthropics/anthropic-cookbook/tree/main/patterns/agents), official building-block patterns.
@@ -66,6 +68,7 @@ are the ones I'd hand to someone entering the field from an economics or quantit
 - [SPAR](https://sparai.org/), part-time mentored research, broad aperture.
 - [BlueDot Impact](https://bluedot.org/), structured AI-safety / AGI-strategy courses.
 - [Open Philanthropy, Technical AI Safety RFP](https://coefficientgiving.org/request-for-proposals-technical-ai-safety-research), funding directions and a useful map of priority areas.
+- [Cooperative AI Foundation](https://www.cooperativeai.com/foundation), research grants and PhD fellowships in cooperative AI; also runs the $10m Multi-Agent Safety Fund with Schmidt Sciences, Google DeepMind, and ARIA.
 - [Successif](https://successif.org/), free career coaching for AI-safety transitions.
 
 *Last refreshed: see the [Field Compass](/compass/) for the most current list.*
