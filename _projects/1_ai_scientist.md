@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Multi-agent "AI scientist" systems for development economics
-description: Multi-agent LLM systems that design and iterate field-experiment nudges, with causal evaluation of AI vs. human treatments.
+description: "Ongoing — Multi-agent LLM systems that design and iterate field-experiment nudges, with causal evaluation of AI vs. human treatments."
 importance: 1
 category: research
 ---
