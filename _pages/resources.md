@@ -22,6 +22,12 @@ are the ones I'd hand to someone entering the field from an economics or quantit
 - [Human Compatible](https://people.eecs.berkeley.edu/~russell/hc.html), Stuart Russell's framing of the alignment problem.
 - [aisafety.com](https://aisafety.com/), comprehensive community meta-index; a good launch page.
 
+## Broader reading & sensemaking
+
+- [Useful Fictions](https://substack.com/@usefulfictions), Cate Hall's essays on finding overlooked possibilities and more useful ways to think about life.
+- [News Minimalist](https://www.newsminimalist.com/?category=society&from=4&sort=significance&to=10), an AI-assisted news aggregator that ranks stories by significance; this view filters for society stories scoring 4–10.
+- [To Summarise](https://www.tosummarise.com/), unusually thorough book summaries that distil each book's main insights, alongside criticism and commentary.
+
 ## AI evaluations & tooling
 
 - [Evaluating Frontier Models for Dangerous Capabilities](https://arxiv.org/abs/2403.13793), Phuong et al. (DeepMind); a reference point for capability evaluations.
