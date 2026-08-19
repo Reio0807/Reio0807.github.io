@@ -25,6 +25,7 @@ are the ones I'd hand to someone entering the field from an economics or quantit
 ## Broader reading & sensemaking
 
 - [Useful Fictions](https://substack.com/@usefulfictions), Cate Hall's essays on finding overlooked possibilities and more useful ways to think about life.
+- [Dynomight](https://dynomight.net/), analytical essays spanning AI, economics, forecasting, statistics, science, and psychology.
 - [News Minimalist](https://www.newsminimalist.com/?category=society&from=4&sort=significance&to=10), an AI-assisted news aggregator that ranks stories by significance; this view filters for society stories scoring 4–10.
 - [To Summarise](https://www.tosummarise.com/), unusually thorough book summaries that distil each book's main insights, alongside criticism and commentary.
 
@@ -48,6 +49,7 @@ are the ones I'd hand to someone entering the field from an economics or quantit
 - [UK AISI research agenda](https://www.aisi.gov.uk/research-agenda), a government safety-institute's priorities.
 - [CSET](https://cset.georgetown.edu/), policy-side research with a strong technical-governance bridge.
 - [AI Safety Index](https://futureoflife.org/ai-safety-index-winter-2025/), independent assessment of frontier labs.
+- [Sentinel Global Risks Watch](https://blog.sentinel-team.org/), LLM-assisted monitoring of warning signs for large-scale catastrophes, paired with analysis and probability estimates from human forecasters; useful as a live watchlist rather than a foundational source.
 
 ## AI × economics (my corner)
 
