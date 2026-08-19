@@ -2,7 +2,7 @@
 layout: page
 title: How marriage policy affects women's labor-force participation
 description: A difference-in-differences study of marriage policy and female labor supply (ICGPSH 2023).
-importance: 3
+importance: 4
 category: research
 ---
 

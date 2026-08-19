@@ -2,7 +2,7 @@
 layout: page
 title: "Field Compass: mapping AI safety × AI economics"
 description: An interactive, hand-curated map of the AI-safety and AI-economics landscape, with relevance scoring and under-explored-zone detection.
-importance: 2
+importance: 3
 category: tools
 redirect: /compass/
 ---
