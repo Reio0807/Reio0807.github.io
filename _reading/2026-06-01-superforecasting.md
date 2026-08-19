@@ -2,7 +2,7 @@
 title: "Superforecasting: The Art and Science of Prediction"
 authors: Philip E. Tetlock & Dan Gardner
 year: 2015
-date: 2026-08-19
+date: 2026-06-01
 link: https://www.penguinrandomhouse.com/books/227815/superforecasting-by-philip-e-tetlock-and-dan-gardner/
 tags: [forecasting, decision-making, calibration]
 ---
