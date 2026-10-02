@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Organized notes from a SPAR Fellowship workshop on researching with AI agents: delegation, context, specification, review, and attention.">
+  <meta name="author" content="Bohan Bai; organized with AI assistance">
+  <link rel="canonical" href="https://reio0807.github.io/notes/spar-research-with-agents/">
+  <title>Research with agents · SPAR workshop notes</title>
+  <style>
+    :root { --ink:#172b3c; --muted:#506779; --blue:#305d83; --blue-dark:#214666; --pale:#eaf1f7; --paper:#fff; --bg:#f5f7fa; --line:#d7e1e9; --warm:#faf4e9; --warm-line:#dbc390; }
+    * { box-sizing:border-box; }
+    html { scroll-padding-top:28px; }
+    body { margin:0; color:var(--ink); background:var(--bg); font:17px/1.72 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    a { color:var(--blue-dark); text-underline-offset:3px; }
+    a:hover { color:#142e44; }
+    a:focus-visible,button:focus-visible,summary:focus-visible { outline:3px solid #458ac0; outline-offset:5px; border-radius:3px; }
+    .skip { position:absolute; top:-100px; left:20px; padding:10px 18px; background:white; z-index:10; }
+    .skip:focus { top:12px; }
+    .frame { max-width:1260px; margin:auto; display:grid; grid-template-columns:226px minmax(0,1fr); gap:64px; padding:0 38px; }
+    aside { padding-top:62px; }
+    .rail { position:sticky; top:32px; }
+    .wordmark { font-weight:750; font-size:15px; letter-spacing:.04em; }
+    .rail small { display:block; color:var(--muted); font-size:12px; margin:5px 0 28px; }
+    nav a { display:block; border-left:2px solid var(--line); padding:7px 0 7px 14px; text-decoration:none; font-size:13px; line-height:1.5; color:var(--muted); }
+    nav a:hover { border-color:var(--blue); background:var(--pale); color:var(--ink); }
+    .rail-tools { margin-top:26px; }
+    button { font:inherit; font-size:13px; font-weight:650; cursor:pointer; padding:10px 15px; border:1px solid #a4bbcd; border-radius:6px; background:white; color:var(--blue-dark); }
+    button:hover { background:var(--pale); }
+    .rail-note { max-width:200px; font-size:12px; color:var(--muted); line-height:1.6; }
+    main { min-width:0; padding:58px 0 42px; }
+    .eyebrow,.section-no { text-transform:uppercase; letter-spacing:.15em; color:var(--blue); font-size:11px; font-weight:750; }
+    h1 { font-size:clamp(40px,5.6vw,66px); line-height:1.08; letter-spacing:-.045em; font-weight:730; max-width:740px; margin:18px 0 23px; }
+    h1 span { color:var(--blue); }
+    .dek { color:var(--muted); font-size:20px; line-height:1.6; max-width:720px; margin-bottom:24px; }
+    .meta { display:flex; gap:9px 22px; flex-wrap:wrap; color:var(--muted); font-size:12px; padding:17px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .source-note { font-size:13px; color:var(--muted); line-height:1.65; margin:20px 0 34px; }
+    .summary { background:var(--blue-dark); color:white; padding:28px 30px; border-radius:10px; }
+    .summary .eyebrow { color:#b7d4ea; }
+    .summary p { font-size:22px; line-height:1.5; margin:12px 0 18px; letter-spacing:-.01em; }
+    .summary ol { padding-left:22px; font-size:15px; margin:0; color:#ecf4fa; }
+    .summary li { padding:3px 0; }
+    section { margin-top:50px; padding-top:10px; }
+    h2 { font-size:30px; line-height:1.23; letter-spacing:-.025em; margin:9px 0 18px; }
+    h3 { font-size:20px; line-height:1.35; letter-spacing:-.015em; margin:27px 0 10px; }
+    h4 { font-size:16px; margin:0 0 8px; }
+    p { margin:12px 0 18px; }
+    ul,ol { padding-left:23px; }
+    li { padding-left:3px; margin:7px 0; }
+    .tag { display:inline-block; color:var(--blue-dark); background:var(--pale); font-size:10px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:3px 8px; border-radius:4px; vertical-align:middle; }
+    .tag.notes { background:#eef0f3; color:#4b5965; }
+    .tag.synthesis { background:#f2efe7; color:#655329; }
+    .legend { font-size:12px; color:var(--muted); line-height:2.4; margin:18px 0 0; }
+    .cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:24px 0; }
+    .card { border:1px solid var(--line); border-radius:8px; background:var(--paper); padding:20px; }
+    .card .num { color:var(--blue); font-size:12px; font-weight:700; }
+    .card h3 { font-size:18px; margin:12px 0 9px; }
+    .card p { font-size:14px; line-height:1.6; margin:0; color:var(--muted); }
+    .callout { border-left:3px solid var(--blue); padding:15px 20px; background:var(--pale); border-radius:0 6px 6px 0; margin:22px 0; font-size:15px; }
+    .callout p { margin:5px 0; }
+    .caution { background:var(--warm); border-color:var(--warm-line); }
+    figure { margin:24px 0; }
+    figcaption { font-size:12px; color:var(--muted); margin:12px 0; line-height:1.6; }
+    .ladder { list-style:none; padding:0; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:white; margin:0; }
+    .ladder li { margin:0; padding:13px 20px; border-bottom:1px solid var(--line); font-size:15px; }
+    .ladder li:last-child { border:0; }
+    .ladder .high { color:var(--muted); background:#f8fafc; }
+    .ladder .frontier { color:var(--blue-dark); background:var(--pale); border-top:2px dashed #6c92b0; border-bottom:2px dashed #6c92b0; font-weight:700; font-size:13px; }
+    .ladder small { display:block; font-weight:400; margin-top:3px; }
+    .process { display:grid; grid-template-columns:1fr 1.35fr 1fr; gap:10px; margin:22px 0; }
+    .phase { background:white; border:1px solid var(--line); border-top:3px solid #7094af; padding:18px; border-radius:4px; }
+    .phase strong { display:block; margin:8px 0 5px; }
+    .phase span { font-size:12px; color:var(--blue); font-weight:700; }
+    .phase p { font-size:13px; line-height:1.55; margin:0; color:var(--muted); }
+    .table-wrap { overflow-x:auto; margin:22px 0; }
+    table { border-collapse:collapse; width:100%; font-size:14px; background:white; }
+    th,td { text-align:left; padding:13px 15px; border-bottom:1px solid var(--line); vertical-align:top; }
+    th { background:var(--pale); color:var(--blue-dark); font-size:12px; }
+    td:first-child { font-weight:650; width:28%; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .two-col .card p { color:var(--ink); }
+    .two-col .card ul { font-size:14px; }
+    details { border:1px solid var(--line); border-radius:7px; background:white; margin:13px 0; }
+    summary { cursor:pointer; padding:16px 19px; font-size:15px; font-weight:650; }
+    details[open] summary { border-bottom:1px solid var(--line); }
+    .detail-body { padding:4px 21px 16px; font-size:15px; }
+    .detail-body > :last-child { margin-bottom:0; }
+    pre { white-space:pre-wrap; overflow-wrap:anywhere; background:#f3f6f9; border:1px solid var(--line); padding:20px; border-radius:5px; font:13px/1.75 ui-monospace,Consolas,monospace; margin:16px 0; }
+    code { font: .9em ui-monospace,Consolas,monospace; }
+    .checklist { list-style:none; padding:0; }
+    .checklist li { padding-left:25px; position:relative; }
+    .checklist li::before { content:"□"; color:var(--blue); position:absolute; left:0; font-weight:700; }
+    .references { font-size:14px; }
+    .references li { margin:16px 0; }
+    .references small { display:block; color:var(--muted); }
+    footer { border-top:1px solid var(--line); margin-top:45px; padding-top:20px; font-size:12px; color:var(--muted); }
+    @media(max-width:1030px) { .frame { grid-template-columns:185px minmax(0,1fr); gap:32px; padding:0 25px; } .cards { grid-template-columns:1fr; } .card h3 { margin-top:5px; } }
+    @media(max-width:760px) { .frame { display:block; padding:0 21px; } aside { padding-top:22px; } .rail { position:static; } .rail small,.rail-note { display:none; } nav { display:flex; overflow-x:auto; gap:7px; margin:16px 0 0; padding-bottom:6px; } nav a { flex:0 0 auto; border:1px solid var(--line); border-radius:4px; padding:7px 11px; background:white; } .rail-tools { margin-top:12px; } main { padding-top:30px; } .dek { font-size:18px; } .summary { padding:24px; } .summary p { font-size:20px; } .process,.two-col { grid-template-columns:1fr; } h2 { font-size:27px; } section { margin-top:38px; } }
+    @media print { @page { size:A4; margin:17mm; } body { background:white; color:#152330; font:10.5pt/1.55 system-ui,sans-serif; } .frame { display:block; max-width:none; padding:0; } aside,.skip,.screen-only { display:none!important; } main { padding:0; } h1 { font-size:35pt; max-width:none; } .dek { font-size:13pt; } h2 { font-size:19pt; } h3 { font-size:13pt; } section { margin-top:24pt; padding:0; } .summary { background:#edf3f8; color:#152330; border:1px solid #b6c9d8; padding:17pt; } .summary .eyebrow,.summary ol { color:#244c6c; } .summary p { font-size:15pt; } .summary,.card,.phase,.callout,pre,details,figure { break-inside:avoid; } .cards { grid-template-columns:repeat(3,1fr); } .table-wrap { overflow:visible; } table { font-size:9pt; } tr { break-inside:avoid; } h2,h3,h4,summary { break-after:avoid; } p { orphans:3; widows:3; } details { border-color:#ccd6dd; } details > .detail-body { display:block!important; } a { color:#244c6c; } .tag { border:1px solid #b8cbd9; } .meta,.source-note,figcaption,footer { font-size:9pt; } }
+  </style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to notes</a>
+<div class="frame">
+  <aside aria-label="Document navigation">
+    <div class="rail">
+      <div class="wordmark">BOHAN BAI / NOTES</div>
+      <small>SPAR Fellowship workshop</small>
+      <p class="screen-only" style="font-size:13px; margin:16px 0;"><a href="/reading/#workshop-notes">← Reading &amp; workshop notes</a> · <a href="/">Home</a></p>
+      <nav aria-label="Contents">
+        <a href="#overview">At a glance</a>
+        <a href="#delegation">01 · Delegation</a>
+        <a href="#friction">02 · Technical friction</a>
+        <a href="#intent">03 · Communicating intent</a>
+        <a href="#review">04 · Reviewing the work</a>
+        <a href="#compute">05 · Spending computation</a>
+        <a href="#attention">06 · Attention &amp; safety</a>
+        <a href="#tool-notes">07 · Tools &amp; demo</a>
+        <a href="#practice">08 · Put it into practice</a>
+        <a href="#sources">Sources &amp; scope</a>
+      </nav>
+      <div class="rail-tools"><button type="button" id="print-button">Print / Save as PDF</button></div>
+      <p class="rail-note">One self-contained file. No accounts, external fonts, analytics, or network requests on opening.</p>
+    </div>
+  </aside>
+  <main id="main">
+    <header>
+      <div class="eyebrow">Research practice / Workshop field notes</div>
+      <h1>Doing better research<br><span>with AI agents.</span></h1>
+      <p class="dek">Delegate substantial work. Make your intent legible. Build a review process that lets you understand and trust the result.</p>
+      <div class="meta"><span>Notes: Bohan Bai</span><span>Speaker: Yoav Tzfati</span><span>SPAR workshop · 30 September 2026</span><span>Expanded 1 October 2026</span></div>
+      <p class="source-note">Expanded from the Otter export of <em>How to make the most of AI agents in your research</em>, Bohan’s written notes, and screenshots from <em>Agent Advice That Generalizes</em>. The workshop date comes from the export’s summary. This is an AI-assisted synthesis, not an official transcript. The supplied transcript ends as the demo begins; later points found only in Otter’s generated summary are labeled separately.</p>
+    </header>
+
+    <div id="overview" class="summary">
+      <div class="eyebrow">The short version</div>
+      <p>The scarce resource is not just agent capability. It is your ability to specify useful work, assess the output, and keep your attention on the research.</p>
+      <ol>
+        <li>Get one difficult delegation working before adding concurrency.</li>
+        <li>Own the specification; let agents write and cross-review implementation plans.</li>
+        <li>Use review reports, concrete examples, and additional reviewers to focus human judgment.</li>
+        <li>Retrieve relevant past decisions; do not let stale memory become hidden instructions.</li>
+      </ol>
+    </div>
+    <p class="legend"><span class="tag">Transcript + time</span> supported by a timestamped passage &nbsp; <span class="tag">Slides</span> supplied screenshots &nbsp; <span class="tag notes">Notes</span> Bohan’s shorthand &nbsp; <span class="tag notes">Otter summary only</span> generated summary, not corroborated by the supplied transcript &nbsp; <span class="tag synthesis">Synthesis</span> added interpretation or template</p>
+    <div class="callout"><p><strong>What the transcript adds:</strong> the distinction between specifications and plans; the goal of delegating whole experiment families; a concrete pre-run review checkpoint for expensive compute; the purpose and timing of HTML debriefs; and more detail on retrieval and dynamic workflows. Timestamp labels identify the start of the relevant transcript block, not the exact sentence.</p></div>
+    <div class="cards" aria-label="The workshop's three pillars">
+      <div class="card"><span class="num">PILLAR 1</span><h3>Remove technical friction</h3><p>Give agents the context, tools, and environment they need. Parallelize only after delegation works.</p></div>
+      <div class="card"><span class="num">PILLAR 2</span><h3>Communicate intent</h3><p>Surface hidden expectations. Separate specification, execution, and review.</p></div>
+      <div class="card"><span class="num">PILLAR 3</span><h3>Spend more computation</h3><p>Use more effort and specialized review where they save valuable human time.</p></div>
+    </div>
+
+    <section id="delegation">
+      <div class="section-no">01 / The central question</div>
+      <h2>How far up can you delegate?</h2>
+      <p><span class="tag">Slides</span> The workshop frames delegation as a ladder. Asking for one edit is different from asking an agent to implement an experiment, and different again from handing over a research question.</p>
+      <p><span class="tag">Transcript · 00:34</span> Yoav’s goal is to help alignment and safety researchers outside frontier labs gain comparable benefits from agent tooling. His test of delegation is not just whether the agent finishes: the researcher should still trust the results, understand what happened and why, and avoid a codebase that deteriorates as work accumulates.</p>
+      <p>He describes the next step beyond a single experiment as a session that handles a <strong>category of experiments</strong>: run them, analyze them, report back, and iterate. The intended gain is more useful research output per unit of human attention, rather than simply more generated code.</p>
+      <figure>
+        <ol class="ladder" aria-label="Delegation ladder, from ambitious to routine">
+          <li class="high">Solve alignment</li>
+          <li class="high">Own a research question</li>
+          <li>Design a category of experiments and run them all</li>
+          <li class="frontier">The slide’s frontier of reliable delegation<small>Above this boundary, expect to supervise.</small></li>
+          <li>Implement, run, and analyze one experiment</li>
+          <li>Write a script</li>
+          <li>Make one code edit <small>Routine end of the ladder</small></li>
+        </ol>
+        <figcaption>Reconstructed from slide 05/16. In the transcript’s 00:34 block, Yoav explicitly aims to help researchers move from individual experiments to experiment families. The line is a conceptual supervision boundary, not a prohibition on delegating above it or a measured capability guarantee.</figcaption>
+      </figure>
+      <p>The slide poses a challenge: if the entire research question can be delegated, consider whether the project is ambitious enough and how much your involvement changes what gets done. Here, <em>counterfactual contribution</em> means the difference your research makes relative to what would happen without it.</p>
+      <p><span class="tag">Transcript · 00:34</span> Yoav says he has not yet seen a full research question successfully delegated. He singles out interpretation as a weakness: agents may reach the wrong conclusions or put too much weight on a particular piece of evidence. His view is that outside researchers should choose questions where human involvement materially changes the outcome, since easily automated work may be taken up by the labs. This is his research-prioritization argument, not a demonstrated forecast.</p>
+      <div class="callout"><p><span class="tag synthesis">Synthesis</span> Delegate implementation and exploration while retaining ownership of the question, the standards of evidence, and the interpretation. Automatable work can still be useful; the slide’s challenge is a prompt to reassess ambition, not a rule that makes such work worthless.</p></div>
+    </section>
+
+    <section id="friction">
+      <div class="section-no">02 / Pillar 1</div>
+      <h2>Remove technical friction before adding more agents</h2>
+      <h3>Give the agent useful access</h3>
+      <p><span class="tag">Slides</span> The access slide advocates Auto mode, access to working context such as Slack and Google Docs, efficient retrieval from previous sessions, a good interface for starting sessions, and a persistent environment that can launch execution environments.</p>
+      <p><span class="tag">Transcript · 06:18</span> The practical target is to stop acting as the agent’s manual interface. Yoav gives examples of repeatedly approving routine commands, downloading Google Docs for the agent, or manually sending many similar Slack messages. For outgoing messages, he explicitly recommends writing or auditing the text rather than sending unchecked generated prose.</p>
+      <h3>Separate the agent’s home base from temporary compute</h3>
+      <p><span class="tag">Transcript · 06:18</span> For GPU research, Yoav recommends running the coding-agent session on a different machine from the GPUs. The persistent session can then provision execution environments as needed instead of being limited to the compute attached to its own host.</p>
+      <p><span class="tag synthesis">Operational interpretation</span> Keep the brief, code, logs, and result locations accessible from the persistent environment. Give temporary compute a defined budget and lifetime. This makes “let the agent run the experiment” a bounded operation rather than an open-ended allocation of resources.</p>
+      <p><span class="tag notes">Notes</span> A retrieval subagent can recover relevant code and feedback from earlier sessions. This shortens specification because you do not need to repeat the project’s history every time.</p>
+      <div class="callout caution"><p><span class="tag synthesis">Safety qualification</span> Useful access does not mean unrestricted access. Match permissions to the task, separate sensitive data and credentials, and retain approval for destructive or consequential actions. The slide’s Auto-mode recommendation is not proof that prompt injection or accidental deletion is prevented.</p></div>
+      <h3>Concurrency comes last</h3>
+      <ul>
+        <li><strong>First:</strong> become comfortable delegating one difficult task from specification through review.</li>
+        <li><strong>Then:</strong> add parallel work when long execution periods create genuine waiting time.</li>
+        <li><strong>Avoid:</strong> launching many sessions before you can keep track of the work. The slide names context switching and losing track of the codebase as costs.</li>
+      </ul>
+      <p><span class="tag">Transcript · 06:18</span> Yoav uses multi-hour unattended tasks to explain when a second session starts to feel natural. He mentions Git worktrees as one way to manage concurrent work, but does not give a setup tutorial in this transcript. The lesson is to learn delegation first, not to copy someone else’s number of parallel sessions.</p>
+      <p><span class="tag synthesis">Practical interpretation</span> Parallelize separable tasks with clear outputs and ownership. More simultaneous activity is not automatically more research progress.</p>
+    </section>
+
+    <section id="intent">
+      <div class="section-no">03 / Pillar 2</div>
+      <h2>Make hidden expectations explicit</h2>
+      <p><span class="tag">Slides</span> “Fuzzy tasks are underspecified tasks” is the workshop’s framing. Even a simple request to sort a list may hide an expectation about algorithmic complexity. An agent must either infer those expectations or ask questions.</p>
+      <p>The slide contrasts models that infer intent with those that follow instructions more literally. Treat that as the presenter’s model-specific observation, not a permanent distinction between product families. The transferable lesson is to make important constraints explicit rather than rely on the model guessing them.</p>
+
+      <h3>A useful rhythm: specification → execution → review</h3>
+      <figure>
+        <div class="process">
+          <div class="phase"><span>01 / IN THE LOOP</span><strong>Specify</strong><p>Clarify the objective, constraints, and what a good result looks like.</p></div>
+          <div class="phase"><span>02 / MOSTLY OUT OF THE LOOP</span><strong>Execute</strong><p>Give the agent a sustained work period within the agreed boundaries.</p></div>
+          <div class="phase"><span>03 / BACK IN THE LOOP</span><strong>Review</strong><p>Inspect evidence, resolve uncertainty, and give specific feedback.</p></div>
+        </div>
+        <figcaption>The slide presents this as a context-switching heuristic, not a mandatory sequence. Some preferences become clear only after seeing an output.</figcaption>
+      </figure>
+      <h3>Use the specification phase to discover what you mean</h3>
+      <ul>
+        <li><strong>Interview prompting:</strong> give a high-level objective and ask the agent to interview you until the important requirements are clear.</li>
+        <li><strong>Voice dumps:</strong> a few minutes of spoken context can be a useful starting point; turn it into a concise written brief.</li>
+        <li><strong>Cheap probes:</strong> explanations, brainstorming, examples, and prototypes can reveal misunderstandings before they become expensive to fix.</li>
+      </ul>
+      <p><span class="tag">Transcript · 11:55</span> Yoav describes staying with the session until he is satisfied that the agent understands the task. Questions can come one at a time and can double as brainstorming. He stops the interview when the questions become minor and the important requirements are understood, rather than aiming to eliminate every possible ambiguity.</p>
+      <p><span class="tag notes">Notes</span> Stay with one task during specification rather than switching repeatedly between sessions.</p>
+      <h3>A specification is not an implementation plan</h3>
+      <div class="table-wrap"><table>
+        <caption class="source-note">The distinction Yoav explicitly makes in the transcript’s 22:56 block.</caption>
+        <thead><tr><th scope="col">Specification</th><th scope="col">Implementation plan</th></tr></thead>
+        <tbody><tr><td>What should be achieved?</td><td>Which steps will the agent take to achieve it?</td></tr>
+        <tr><td>Objective, requirements, preferences, and boundaries.</td><td>Implementation sequence, decomposition, and execution details.</td></tr>
+        <tr><td>Yoav wants the human engaged here.</td><td>He delegates this to the agent and asks another model to review it.</td></tr></tbody>
+      </table></div>
+      <div class="callout"><p><span class="tag">Transcript · 22:56</span> <strong>The criticism of Plan mode is now clear.</strong> Yoav says he no longer reads implementation plans or uses Plan mode because he trusts agents to choose the steps once the goal is clear. He still values written plans and cross-model plan review before execution. His advice is not to abandon specification or planning, but to direct human attention toward the desired outcome rather than routine implementation choices.</p></div>
+      <p><span class="tag synthesis">Boundary</span> Delegating implementation does not mean delegating away scientific judgment. If a “step” changes the research question, measurement, identification assumptions, or an important resource commitment, it deserves explicit human consideration.</p>
+
+      <h3>Insert checkpoints where mistakes become expensive</h3>
+      <p><span class="tag">Transcript · 28:41</span> Specification → execution → review is a heuristic, not a rigid three-step procedure. Yoav gives two useful exceptions:</p>
+      <ul><li><strong>Highly iterative work:</strong> when many small details need human feedback, most of a session can resemble specification.</li><li><strong>An expensive experiment:</strong> for a run expected to take about 20 GPU hours, specify the task, have the agent implement everything up to launch, review that implementation, then authorize the run and review the resulting analysis.</li></ul>
+      <div class="callout"><p><span class="tag synthesis">Checkpoint pattern</span> Agree on the objective → prepare the experiment → review before committing compute → run and analyze → review the conclusions. The checkpoint is tied to the cost and consequence of the next action.</p></div>
+
+      <h3>Retrieve context; do not accumulate contradictions</h3>
+      <p><span class="tag">Slides</span> Conflicting or stale context makes it hard for the agent to know which instruction should win. Model-written memories can also generalize a narrow preference too broadly. The workshop favors on-demand retrieval over relying on a growing collection of imperfect summaries.</p>
+      <p><span class="tag">Transcript · 11:55–17:08</span> Memory is part of the specification bottleneck. Without reliable recall, the agent either repeats questions or guesses preferences it cannot afford to ask about in every session. Yoav’s preferred sequence is: give the high-level task, retrieve relevant preferences from recent sessions, then interview the human about what remains unclear.</p>
+      <p><span class="tag">Transcript · 17:08</span> He also cautions against long <code>CLAUDE.md</code> files that duplicate the repository, and agent-written skills that are maintained without human auditing. These can introduce conflicting instructions. His criticism is directed at unreliable or redundant context, not at retaining useful project knowledge.</p>
+      <p><span class="tag notes">Notes</span> Keep relevant project preferences available. Combined with the slide’s warning, this means supplying the <em>right</em> context, not placing every past preference in every session.</p>
+      <details>
+        <summary>A compact context-retrieval brief</summary>
+        <div class="detail-body"><p><span class="tag synthesis">Template</span> Ask a retrieval agent to return:</p><ul><li>The most relevant past decisions, with session or file references.</li><li>The original scope of each preference and whether it still applies.</li><li>Existing code or artifacts worth reusing.</li><li>Conflicts between old instructions and the current request.</li><li>Only the unresolved questions that materially affect the task.</li></ul><p>The original record should remain available. A retrieved summary is not a substitute for checking the current code or instructions.</p></div>
+      </details>
+      <p class="source-note">One supplied slide attributes an observation about removing over 80% of Claude Code’s system prompt without measurable loss to Thariq Shihipar at Anthropic. This note records that attribution without independently verifying the original statement. It is not a recommendation to remove safety protections.</p>
+    </section>
+
+    <section id="review">
+      <div class="section-no">04 / Pillar 2, continued</div>
+      <h2>Review for understanding, not just approval</h2>
+      <p><span class="tag">Slides</span> The review dilemma is real: inspect everything and lose the time advantage, or inspect nothing and sacrifice quality. The workshop suggests a review report ranked by the model’s uncertainty, and explicitly asking for an explanation when you feel lost.</p>
+      <p><span class="tag">Transcript · 11:55</span> Review is the other half of communicating intent. During execution, the agent encounters surprises and makes choices that were not fully specified. Reviewing those choices lets the human correct or override them. Plots, interfaces, prompts, and prose are examples where preferences often become clear only after seeing the output.</p>
+      <h3>Ask for the report before you leave</h3>
+      <p><span class="tag">Transcript · 17:08</span> Yoav asks for a debrief when handing the task over for execution, not only after returning. The intended handoff is a prepared HTML artifact explaining what was done, why, which decisions were made, and what alternatives the human may want to consider. That avoids reconstructing the session from terminal messages.</p>
+      <p>He does not frame the choice as “read the entire Git diff or read none of it.” Instead, the agent can help prioritize what code and decisions deserve inspection, and in what order. The human still reviews and may iterate.</p>
+      <p><span class="tag notes">Notes</span> Ask for enough concrete examples in the debrief to exercise your own judgment. Leave comments directly on the report artifact. If you need to postpone review, compact the session first so the work is easier to resume.</p>
+      <div class="callout caution"><p><span class="tag synthesis">Review qualification</span> Model-reported uncertainty is only one signal. Also inspect high-impact choices, surprising results, and a sample of work the model claims is correct. A confident omission can be more important than an acknowledged uncertainty.</p></div>
+      <h3>What a useful debrief should contain</h3>
+      <div class="table-wrap">
+        <table>
+          <caption class="source-note">Suggested report structure, expanding the workshop’s review advice.</caption>
+          <thead><tr><th scope="col">Report component</th><th scope="col">What the human needs to see</th></tr></thead>
+          <tbody>
+            <tr><td>Outcome against the brief</td><td>What was completed, what was not, and any change in scope.</td></tr>
+            <tr><td>Evidence and examples</td><td>Links to outputs, relevant code or data, tests actually run, and representative successes and failures.</td></tr>
+            <tr><td>Decisions and assumptions</td><td>Important choices, alternatives considered, and assumptions that could change the result.</td></tr>
+            <tr><td>Review priorities</td><td>Uncertain or consequential items, why they matter, and the exact place to inspect.</td></tr>
+            <tr><td>Reproduction and handoff</td><td>How to rerun the work, remaining limitations, and the next decision required from the human.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><span class="tag synthesis">Before compaction</span> Save the brief, output locations, unresolved issues, and verification evidence to durable files. Compaction can lose detail; it should not be the only record of unfinished review.</p>
+    </section>
+
+    <section id="compute">
+      <div class="section-no">05 / Pillar 3</div>
+      <h2>Spend computation where it saves human time</h2>
+      <p><span class="tag">Slides</span> Cross-model plan and code review is a central recommendation. The slide also says review can be worthwhile within a single model family. For complex work, use reviewers with different responsibilities: correctness, security, user experience, and dependencies.</p>
+      <p><span class="tag">Transcript · 22:56</span> Yoav describes a tool that lets Claude Code call GPT reviewers autonomously, avoiding manual copying between applications. His workflow uses an authoring model to plan and implement, another model to review the plan, and additional models to check the finished work. The goal is to spend computation catching mistakes before they consume more human time.</p>
+      <ul>
+        <li><strong>Review the plan:</strong> catch flawed assumptions and missing requirements before implementation.</li>
+        <li><strong>Review the output:</strong> ask reviewers to inspect the actual work rather than simply endorse the authoring agent’s summary.</li>
+        <li><strong>Scale effort to difficulty:</strong> use more computation when complexity and consequences justify it.</li>
+      </ul>
+      <h3>Dynamic workflows for families of experiments</h3>
+      <p><span class="tag">Transcript · 22:56</span> Yoav describes “dynamic workflows” as a way for the agent to programmatically launch many agents, rather than doing everything itself or delegating individual tasks one at a time. He associates this with a feature he calls “Ultra Code” and says it is especially useful for tasks that involve a range of experiments or repeated iteration.</p>
+      <ul><li>Compare a range of loss functions.</li><li>Try multiple prompts and compare performance.</li><li>Iterate on a prompt, rerunning the experiment after changes.</li><li>Build an evaluation and improve a candidate against it.</li></ul>
+      <p class="source-note">These are examples from the workshop, not verified current product instructions. The precise feature names, availability, prices, and model rankings are not established by this transcript.</p>
+      <h3>Choose effort according to whether you are waiting</h3>
+      <p><span class="tag">Transcript · 28:41</span> When the human is actively discussing the task, Yoav suggests medium effort and quick interactions; background subagents can do supporting work while the conversation continues. Once execution is delegated, he is more willing to allow additional time and computation. The distinction is human attention versus agent runtime, not “always maximize effort.”</p>
+      <p><span class="tag notes">Notes</span> Bohan’s shorthand records medium → “ultra” → medium. The transcript supports medium effort during interactive work and heavier execution when useful; it does not prescribe a universal medium-effort setting for every review.</p>
+      <details><summary>Evaluation-driven iteration: what is in the record?</summary><div class="detail-body"><p><span class="tag notes">Otter summary only</span> The generated summary adds a “North Star” benchmark with a frozen ideal metric. The transcript supports iterating against an evaluation, but does not contain that particular benchmark formulation. Retain it as a summary-only idea rather than a confirmed instruction.</p><p><span class="tag synthesis">Research safeguard</span> Improving against one score is not the same as improving the research result. Define the evaluation and stopping rule, preserve failed runs, and check performance on evidence not used to steer iteration. Otherwise an agent can learn the quirks of the metric while the scientific conclusion remains weak.</p></div></details>
+      <div class="callout"><p><span class="tag synthesis">Cost lens</span> Compare the cost of the full task: model usage, waiting, human review, and rework. “Tokens are cheap relative to your time” is the slide’s heuristic, not a claim that higher spending always improves the outcome. Multiple reviewers can still share the same blind spots.</p></div>
+    </section>
+
+    <section id="attention">
+      <div class="section-no">06 / Additional notes &amp; qualifications</div>
+      <h2>Protect attention without abandoning oversight</h2>
+      <div class="two-col">
+        <div class="card"><h4>Attention and motivation</h4><span class="tag notes">Notes</span><ul><li>Use a quieter interface, such as the demonstrated <code>/focus</code> mode, to reduce intermediate chatter.</li><li>Do not continuously watch routine execution. Return for agreed checkpoints and the review.</li><li>Long exchanges can be mentally tiring; avoid switching sessions during specification.</li><li>When motivation drops, reconnect the task to its theory of change: why this research could matter.</li><li>Flow and personifying agents were mentioned, but the notes do not capture a full argument about personification.</li></ul></div>
+        <div class="card"><h4>Security and research integrity</h4><span class="tag notes">Notes</span><ul><li>Keep crypto wallets away from the agent’s accessible environment.</li><li>Consider prompt injection and destructive filesystem actions.</li><li>Check the service’s data-use settings and training opt-out options.</li><li>The notes connect debriefs and control protocols with concerns about research sabotage; a specific protocol was not captured.</li></ul></div>
+      </div>
+      <p><span class="tag synthesis">Qualification</span> Stepping away from execution is appropriate only within a bounded task. Maintain checkpoints for sensitive data access, external actions, meaningful spending, or irreversible changes. A good debrief supports oversight but is not, by itself, a safeguard against deliberate concealment.</p>
+      <h3>What the Otter summary adds about security</h3>
+      <p><span class="tag notes">Otter summary only</span> The summary connects the wallet warning to supply-chain risk from unverified packages or software. It also mentions robust cloud backups against accidental deletion and provider training opt-outs. These details are not in the supplied transcript, though the broad topics overlap Bohan’s shorthand.</p>
+      <p><span class="tag synthesis">Practical reading</span> Keep sensitive credentials outside the agent’s working environment, make recoverable backups, and check applicable data-use settings. Do not rely on a claimed model safeguard as the sole protection against deletion or disclosure. Backups protect recoverability; they do not prevent exfiltration.</p>
+      <p><span class="tag notes">Otter summary only</span> Strategic deception or sabotage in debriefs appears as an open question, not a resolved control protocol. Neither the supplied transcript nor the summary establishes that a debrief plugin can prevent research sabotage.</p>
+      <h3>Separate workflow fatigue from research motivation</h3>
+      <p><span class="tag notes">Otter summary only</span> The summary distinguishes fatigue from repeatedly correcting mistakes or absorbing too much review information from uncertainty about the purpose of the research itself. It recommends reducing specification-phase context switching and seeking mentorship when motivation or the value of a research direction is in doubt.</p>
+      <p><span class="tag synthesis">A useful diagnostic</span> If the friction is repeated explanation, improve retrieval. If it is an overwhelming review, request a more selective report. If it is uncertainty about why the project matters, a better prompt may not help; revisit the research question and theory of change with a mentor.</p>
+      <h3>The flow reference</h3>
+      <p>Bohan linked <a href="https://www.nature.com/articles/s41467-022-29742-2">A computational theory of the subjective experience of flow</a>. Its abstract proposes that flow relates to the mutual information between desired outcomes and the means of achieving them, and reports five experiments. Applying that account to agent-assisted work is an interpretation, not a result tested in this paper.</p>
+      <p><span class="tag synthesis">Possible application</span> Make your own role coherent: choose the question, define success, then examine what the results mean. Repeatedly checking a running agent is not the same as making progress on that intellectual task.</p>
+    </section>
+
+    <section id="tool-notes">
+      <div class="section-no">07 / Tools &amp; the live demonstration</div>
+      <h2>Keep the workflow lesson; recheck the tool details</h2>
+      <p>The terminal demonstration illustrates a request that combines a concrete objective, prior feedback retrieval, tentative judgments, and an explicit review artifact. The two terminal screenshots supplied initially show the same example.</p>
+      <details open>
+        <summary>What the model-router example demonstrates</summary>
+        <div class="detail-body"><p><span class="tag">Screenshot</span> The user asks an agent to update a model-routing plugin, gives provisional views about model cost and suitability, asks it to retrieve relevant feedback from previous sessions, and requests an artifact containing items for human review.</p><ul><li><strong>Context retrieval:</strong> reuse earlier feedback rather than repeat the entire history.</li><li><strong>Task-based routing:</strong> distinguish coding, auditing, and reviewing rather than assume one model is best for everything.</li><li><strong>Epistemic restraint:</strong> avoid strong claims about newly released models.</li><li><strong>Artifact handoff:</strong> produce something inspectable, with open decisions for the human.</li></ul><p>The screenshot also shows Auto mode, medium effort, multiple agents, and hidden intermediate messages under <code>/focus</code>. Its particular model names, price comparisons, and rankings are recorded observations from the demonstration, not independently verified recommendations.</p></div>
+      </details>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Mention</th><th scope="col">What can safely be carried forward</th></tr></thead>
+          <tbody>
+            <tr><td>Alignment Hive</td><td>The closing slide links to <a href="https://github.com/Crazytieguy/alignment-hive">Crazytieguy/alignment-hive</a>. Its public README describes shared alignment tooling, a Claude Code plugin marketplace, and opt-in session sharing.</td></tr>
+            <tr><td>Model router</td><td>The repository lists an experimental model-router plugin. Check current documentation before choosing models or adopting a configuration.</td></tr>
+            <tr><td>Session report / debrief</td><td>At 17:08, Yoav describes a plugin being completed during the workshop that generates an HTML session report when asked for a debrief. This clarifies the function behind the slide and shorthand. The export still does not establish an exact package name, release status, or installation command.</td></tr>
+            <tr><td>Past-session retrieval</td><td>At 17:08, Yoav describes a Claude Code subagent that retrieves relevant information from earlier sessions. He uses it before the specification interview to avoid repeating preferences. No exact installation identifier appears in the transcript.</td></tr>
+            <tr><td>Dynamic workflows / “Ultra Code”</td><td>Described in the 22:56 block as programmatic orchestration of many agents, especially for iterative or multi-experiment work. This is a workshop description, not current setup documentation.</td></tr>
+            <tr><td>Focus / projects</td><td><code>/focus</code> is visible in the demo screenshot. “Projects” is in Bohan’s shorthand, but the exported transcript does not explain it. No product behavior is inferred.</td></tr>
+            <tr><td>Harness preference</td><td>Otter’s summary attributes a preference for Claude Code to using Anthropic and OpenAI subscriptions in one place. That later discussion is not present in the transcript; it is not evidence about current compatibility, billing, or security.</td></tr>
+            <tr><td>“Caveman”</td><td>Recorded as not recommended. The notes do not identify the tool or the reason; preserve this as an unresolved reference.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="source-note">The closing slide’s stated aim is to help alignment research accelerate at a pace comparable to capabilities. No tools were installed for this note. Session sharing and model-provider data-use settings are separate decisions; review both before sending research material.</p>
+    </section>
+
+    <section id="practice">
+      <div class="section-no">08 / Reusable practice kit</div>
+      <h2>A next-session checklist</h2>
+      <p><span class="tag synthesis">Added templates</span> The following is an application of the workshop, not a transcript of the presenter’s prompts or a claim about Bohan’s existing workflow.</p>
+      <ol class="checklist">
+        <li>Select one substantial, bounded task.</li>
+        <li>Retrieve the relevant past decisions and check for stale instructions.</li>
+        <li>Clarify the question, deliverables, boundaries, and acceptance criteria.</li>
+        <li>Ask another model to review the implementation plan; identify any scientific choices or resource commitments that require your approval.</li>
+        <li>Let the agent work within agreed limits instead of monitoring every step.</li>
+        <li>Request a debrief with evidence, examples, uncertainties, and reproduction steps.</li>
+        <li>Use another reviewer where warranted, then make the final judgment yourself.</li>
+        <li>Save specific feedback with its scope and source for future retrieval.</li>
+      </ol>
+
+      <details open>
+        <summary>Template 1 · Specify a research task</summary>
+        <div class="detail-body"><pre>Objective: [What question or decision does this task serve?]
+Why it matters: [How could the answer change our research?]
+Context: [Relevant sources, code, and past decisions.]
+
+First retrieve relevant prior feedback and identify conflicts with
+this request. Ask me about ambiguities that materially change the work.
+
+Deliver: [Named artifacts and their intended audience.]
+Success criteria: [What would make the result acceptable?]
+Constraints: [Data, methods, time, cost, permissions, and exclusions.]
+Stop and ask if: [Specific conditions requiring human judgment.]
+
+Once the specification is agreed, write an implementation plan and have
+another model review it before execution. Surface any scientific choices
+or costly commitments that require my approval.
+
+Prepare the debrief before I return: include evidence, examples,
+limitations, and a prioritized review list.</pre></div>
+      </details>
+      <details>
+        <summary>Template 2 · Request an inspectable debrief</summary>
+        <div class="detail-body"><pre>Explain what you did against the original brief.
+Link each important claim to an output, source, or test result.
+Distinguish tests actually run from checks merely proposed.
+
+Include representative examples and at least one failure or edge case
+where applicable. Explain how the examples were selected.
+
+Rank review items by uncertainty AND consequence if wrong.
+Include assumptions, unresolved problems, scope changes, and places
+where the result depends on judgment. Do not equate confidence with proof.
+
+Give reproduction steps and the decisions you need from me.
+Write this so I can understand the work without replaying the chat.</pre></div>
+      </details>
+      <details>
+        <summary>Template 3 · Commission a second review</summary>
+        <div class="detail-body"><pre>Review the original brief and actual artifacts independently.
+Do not rely only on the authoring agent's report.
+
+Focus on: [Correctness / assumptions / security / usability / dependencies.]
+For each finding, give its location, evidence, impact, and proposed check.
+Separate confirmed defects from uncertainties or preferences.
+State what you could not verify. Sample apparently successful results too.
+
+Return a prioritized report. Do not modify the work unless asked.</pre></div>
+      </details>
+      <details>
+        <summary>Template 4 · Delegate an experiment family with a pre-run gate</summary>
+        <div class="detail-body"><pre>Question: [The research question this experiment family informs.]
+Variants: [The agreed range of conditions, prompts, or methods.]
+Evaluation: [Outcomes, comparisons, and evidence needed for interpretation.]
+Budget and stopping rule: [Compute, time, cost, and maximum iterations.]
+
+Prepare the implementation and have another model review it.
+Stop before launching the expensive runs. Show me the setup, expected
+cost, smoke-test results, and unresolved scientific choices.
+
+After approval, run the agreed comparisons and preserve the run records,
+including failed or null results. Do not change the evaluation or expand
+the search without flagging it.
+
+Prepare an HTML debrief comparing results, uncertainty, limitations,
+and plausible alternative interpretations. Distinguish observations
+from conclusions and identify what I need to judge.</pre></div>
+      </details>
+
+      <h3>An example for AI × economics research</h3>
+      <p><span class="tag synthesis">Illustration for Bohan</span> Instead of “investigate the economic impact of AI,” delegate a bounded comparison: <em>For a specified set of papers, extract the outcome, unit of analysis, empirical design, uncertainty, and stated limitations into a source-linked table. Flag claims that exceed the underlying evidence.</em></p>
+      <p>The agent can assemble and check that evidence. Bohan retains the judgment about which question matters, whether the studies are comparable, and what the findings justify. This is a proposed use case, not an empirical assessment performed here.</p>
+      <p>A larger delegation could compare an agreed family of LLM-agent prompts or experimental conditions, with common outcomes and a fixed compute budget. The implementation and runs can be delegated; whether the agents represent economically meaningful behavior, and what the results imply for AI safety, remain questions to inspect rather than conclusions to accept from a score alone.</p>
+    </section>
+
+    <section id="sources">
+      <div class="section-no">Source trail / Scope &amp; attribution</div>
+      <h2>What this note is based on</h2>
+      <ol class="references">
+        <li><strong>Otter transcript export, supplied 1 October 2026.</strong><small>The ZIP contains a transcript TXT and a generated-summary TXT for <em>SPAR workshop: How to make the most of AI agents in your research (Yoav Tzfati)</em>. The transcript begins at 00:00 and its final block starts at 28:41, ending with the transition to the demo. It does not include the demo or subsequent Q&amp;A. The exact final elapsed time is not given.</small></li>
+        <li><strong>Otter-generated summary.</strong><small>The summary identifies the workshop date as 30 September 2026 and contains later topics not found in the supplied transcript. Those additions are labeled “Otter summary only.” A generated summary is secondary evidence and can introduce errors. The attendee email in its header is intentionally omitted from this shareable artifact.</small></li>
+        <li><strong>Bohan’s written workshop notes.</strong><small>The original shorthand supplies details about retrieval, focus mode, effort settings, artifact comments, debriefs, security, compaction, fatigue, and motivation. Ambiguous tool references are retained as such.</small></li>
+        <li><strong>Nine supplied slide screenshots.</strong><small>Topics: delegation (05/16), access (07/16), concurrency, underspecified tasks, specification → execution → review, the spec phase, the review phase, poor context and memory, and spending more tokens. The remaining slide numbers and any missing slides are not reconstructed.</small></li>
+        <li><strong>Two unique earlier screenshots.</strong><small>A model-router demonstration and the closing Alignment Hive slide. The duplicated terminal screenshot was counted once. Screenshot content is transcribed or paraphrased; original raster images are not bundled.</small></li>
+        <li><a href="https://github.com/Crazytieguy/alignment-hive">Alignment Hive repository</a>.<small>Public README consulted 30 September 2026 to confirm the resource and broad tool descriptions. This note is not an installation guide or security audit.</small></li>
+        <li><a href="https://www.nature.com/articles/s41467-022-29742-2">A computational theory of the subjective experience of flow</a>.<small>The paper linked in Bohan’s notes. The publisher’s indexed abstract was consulted for the narrow description above; the paper is background on flow, not evidence about agent workflows.</small></li>
+      </ol>
+      <details><summary>Transcript navigation by timestamp</summary><div class="detail-body"><ul>
+        <li><strong>00:00:</strong> host’s introduction.</li>
+        <li><strong>00:34:</strong> Yoav’s mission, definition of trustworthy delegation, the delegation ladder, and the limits of handing over a research question.</li>
+        <li><strong>06:18:</strong> the three pillars; access and permissions; Docs, Slack, and GPU setup; concurrency; underspecified tasks.</li>
+        <li><strong>11:55:</strong> specification → execution → review; feedback on outputs; interview prompting, voice input, and the memory bottleneck.</li>
+        <li><strong>17:08:</strong> past-session retrieval, HTML debriefs, the report plugin, and risks from redundant instructions or unaudited skills.</li>
+        <li><strong>22:56:</strong> cross-model review; specifications versus plans; dynamic workflows and iterative experiment examples.</li>
+        <li><strong>28:27:</strong> host’s reminder to put questions in the chat.</li>
+        <li><strong>28:41:</strong> exceptions to the three-phase structure, the 20-GPU-hour example, interactive effort settings, and transition to the demo.</li>
+      </ul><p>These are block-start timestamps from the export. They are not invented sentence-level timestamps or links to an available recording.</p></div></details>
+      <div class="callout"><p><strong>How sources were reconciled:</strong> the transcript supplies the spoken explanation, the slides preserve visual structure, and Bohan’s notes retain additional observations. The generated summary supplements but does not override them. Obvious transcription variants such as “Cloud Code” are normalized to Claude Code; uncertain product names and performance claims are not silently corrected or treated as established facts.</p></div>
+      <p class="source-note">The introduction includes a time-sensitive claim about model task horizons, attributed by the speaker to METR. It is contextual motivation for the talk, not a verified current estimate in this note. Similarly, model rankings, prices, subscription generosity, and statements about newer features describe workshop views rather than independently checked product guidance.</p>
+      <p class="source-note">Sharing: this file contains the organized notes and public resource links, not the private Otter share URL or a meeting recording. It does not imply endorsement by SPAR, the presenter, or any model provider.</p>
+    </section>
+    <footer>Compiled from Bohan Bai’s workshop materials with AI assistance · Workshop: 30 September 2026 · Expanded: 1 October 2026<br>Offline-readable HTML · Native section links and expandable templates · Print styles included</footer>
+  </main>
+</div>
+<script>
+  (() => {
+    let closedForPrint = [];
+    function preparePrint() {
+      document.querySelectorAll('details:not([open])').forEach(el => {
+        closedForPrint.push(el);
+        el.open = true;
+      });
+    }
+    window.addEventListener('beforeprint', preparePrint);
+    window.addEventListener('afterprint', () => {
+      closedForPrint.forEach(el => { el.open = false; });
+      closedForPrint = [];
+    });
+    document.getElementById('print-button').addEventListener('click', () => {
+      preparePrint();
+      window.print();
+    });
+  })();
+</script>
+</body>
+</html>
