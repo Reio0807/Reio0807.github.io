@@ -9,7 +9,7 @@ children:
     permalink: /resources/
   - title: media
     permalink: /media/
-  - title: reading log
+  - title: reading & workshop notes
     permalink: /reading/
   - title: divider
   - title: ideology
